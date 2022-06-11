@@ -1,13 +1,15 @@
+import 'package:dodge_game/game/game.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import 'dodge_game.dart';
-
 void main() {
-  final game = DodgeGame(children: [MyFace()]);
+  WidgetsFlutterBinding.ensureInitialized();
+  Flame.device.fullScreen();
+
   runApp(
     GameWidget(
-      game: game,
+      game: DodgeGame(),
     ),
   );
 }
