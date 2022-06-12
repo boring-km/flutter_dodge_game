@@ -1,3 +1,4 @@
+import 'package:dodge_game/game/enemy_manager.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -31,6 +32,9 @@ class DodgeGame extends FlameGame with PanDetector {
     player.anchor = Anchor.center;
 
     add(player);
+
+    EnemyManager enemyManager = EnemyManager(spriteSheet: spriteSheet);
+    add(enemyManager);
   }
 
   @override
