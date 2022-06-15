@@ -1,3 +1,4 @@
+import 'package:dodge_game/game/bullet.dart';
 import 'package:dodge_game/game/enemy_manager.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:flame/components.dart';
@@ -6,8 +7,11 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
-class DodgeGame extends FlameGame with PanDetector {
+class DodgeGame extends FlameGame with PanDetector, TapDetector {
   late Player player;
+  late SpriteSheet _spriteSheet;
+  late EnemyManager _enemyManager;
+
   Offset? _pointerStartPosition;
   Offset? _pointerCurrentPosition;
   final _joystickRadius = 60.0;
@@ -17,14 +21,14 @@ class DodgeGame extends FlameGame with PanDetector {
   Future<void> onLoad() async {
     await images.load('simpleSpace_tilesheet@2.png');
 
-    final spriteSheet = SpriteSheet.fromColumnsAndRows(
+    _spriteSheet = SpriteSheet.fromColumnsAndRows(
       image: images.fromCache('simpleSpace_tilesheet@2.png'),
       columns: 8,
       rows: 6,
     );
 
     player = Player(
-      sprite: spriteSheet.getSpriteById(6),
+      sprite: _spriteSheet.getSpriteById(6),
       size: Vector2(64, 64),
       position: size / 2,
     );
@@ -33,8 +37,8 @@ class DodgeGame extends FlameGame with PanDetector {
 
     add(player);
 
-    EnemyManager enemyManager = EnemyManager(spriteSheet: spriteSheet);
-    add(enemyManager);
+    _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
+    add(_enemyManager);
   }
 
   @override
@@ -96,4 +100,18 @@ class DodgeGame extends FlameGame with PanDetector {
     _pointerStartPosition = null;
     _pointerCurrentPosition = null;
   }
+
+  @override
+  void onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
+
+    Bullet bullet = Bullet(
+      sprite: _spriteSheet.getSpriteById(28),
+      size: Vector2(64, 64),
+      position: player.position.clone(),
+    );
+    bullet.anchor = Anchor.center;
+    add(bullet);
+  }
+
 }
