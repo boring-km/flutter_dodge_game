@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
@@ -45,15 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final accelerometer =
-    _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
-    final gyroscope =
-    _gyroscopeValues?.map((double v) => v.toStringAsFixed(1)).toList();
-    final userAccelerometer = _userAccelerometerValues
-        ?.map((double v) => v.toStringAsFixed(1))
-        .toList();
-    final magnetometer =
-    _magnetometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    final accelerometer = _accelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    final gyroscope = _gyroscopeValues?.map((double v) => v.toStringAsFixed(4)).toList();
+    final userAccelerometer = _userAccelerometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
+    final magnetometer = _magnetometerValues?.map((double v) => v.toStringAsFixed(1)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -132,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _streamSubscriptions.add(
       accelerometerEvents.listen(
-            (AccelerometerEvent event) {
+        (AccelerometerEvent event) {
           setState(() {
             _accelerometerValues = <double>[event.x, event.y, event.z];
           });
@@ -141,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     _streamSubscriptions.add(
       gyroscopeEvents.listen(
-            (GyroscopeEvent event) {
+        (GyroscopeEvent event) {
           setState(() {
             _gyroscopeValues = <double>[event.x, event.y, event.z];
           });
@@ -150,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     _streamSubscriptions.add(
       userAccelerometerEvents.listen(
-            (UserAccelerometerEvent event) {
+        (UserAccelerometerEvent event) {
           setState(() {
             _userAccelerometerValues = <double>[event.x, event.y, event.z];
           });
@@ -159,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     _streamSubscriptions.add(
       magnetometerEvents.listen(
-            (MagnetometerEvent event) {
+        (MagnetometerEvent event) {
           setState(() {
             _magnetometerValues = <double>[event.x, event.y, event.z];
           });

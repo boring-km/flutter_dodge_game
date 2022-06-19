@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class Snake extends StatefulWidget {
-  Snake({Key? key, this.rows = 20, this.columns = 20, this.cellSize = 10.0})
-      : super(key: key) {
+  Snake({Key? key, this.rows = 20, this.columns = 20, this.cellSize = 10.0}) : super(key: key) {
     assert(10 <= rows);
     assert(10 <= columns);
     assert(5.0 <= cellSize);
@@ -77,12 +76,12 @@ class SnakeState extends State<Snake> {
   @override
   void initState() {
     super.initState();
-    _streamSubscription =
-        accelerometerEvents.listen((AccelerometerEvent event) {
-          setState(() {
-            acceleration = event;
-          });
-        });
+    // TODO 기울기로 움직일 땐 AccelerometerEvent 사용한다.
+    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        acceleration = event;
+      });
+    });
 
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
       setState(() {
@@ -92,13 +91,16 @@ class SnakeState extends State<Snake> {
   }
 
   void _step() {
-    final newDirection = acceleration == null
+    // TODO 이 움직임!
+    // y 절댓값이 크면 y 쪽으로만 움직이고 (상하), x 절댓값이 크면 x 쪽으로만 움직인다. (좌우)
+    // 여기선 sign 값으로 양수/음수만 구분했지만 닷지게임에서는 좀더 자세한 값을 사용해야겠다.
+    final math.Point<int>? newDirection = acceleration == null
         ? null
         : acceleration!.x.abs() < 1.0 && acceleration!.y.abs() < 1.0
-        ? null
-        : (acceleration!.x.abs() < acceleration!.y.abs())
-        ? math.Point<int>(0, acceleration!.y.sign.toInt())
-        : math.Point<int>(-acceleration!.x.sign.toInt(), 0);
+            ? null
+            : (acceleration!.x.abs() < acceleration!.y.abs())
+                ? math.Point<int>(0, acceleration!.y.sign.toInt())
+                : math.Point<int>(-acceleration!.x.sign.toInt(), 0);
     state!.step(newDirection);
   }
 }
