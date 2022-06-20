@@ -1,21 +1,24 @@
-import 'package:dodge_game/game/bullet.dart';
-import 'package:dodge_game/game/enemy_manager.dart';
+import 'dart:async';
+
 import 'package:dodge_game/game/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class DodgeGame extends FlameGame with PanDetector, TapDetector {
   late Player player;
   late SpriteSheet _spriteSheet;
-  late EnemyManager _enemyManager;
+  // late EnemyManager _enemyManager;
 
-  Offset? _pointerStartPosition;
-  Offset? _pointerCurrentPosition;
-  final _joystickRadius = 60.0;
-  final double _deadZoneRadius = 10;
+
+  late StreamSubscription<AccelerometerEvent> _streamSubscription;
+
+  var count = 0;
+
+  var baseX = 0.0;
+  var baseY = 0.0;
 
   @override
   Future<void> onLoad() async {
@@ -29,7 +32,7 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
 
     player = Player(
       sprite: _spriteSheet.getSpriteById(6),
-      size: Vector2(64, 64),
+      size: Vector2(24, 24),
       position: size / 2,
     );
 
@@ -37,81 +40,56 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
 
     add(player);
 
-    _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
-    add(_enemyManager);
-  }
+    // _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
+    // add(_enemyManager);
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
+    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+      var newY = event.y - baseY;
+      var newX = event.x - baseX;
 
-    if (_pointerStartPosition != null) {
-      canvas.drawCircle(
-        _pointerStartPosition!,
-        _joystickRadius,
-        Paint()..color = Colors.grey.withAlpha(100),
-      );
-    }
+      if (-0.1 <= newX && newX <= 0.1) newX = 0.0;
+      if (-0.1 <= newY && newY <= 0.1) newY = 0.0;
 
-    if (_pointerCurrentPosition != null) {
-      var delta = _pointerCurrentPosition! - _pointerStartPosition!;
-
-      if (delta.distance > _joystickRadius) {
-        delta = _pointerStartPosition! + (Vector2(delta.dx, delta.dy).normalized() * _joystickRadius).toOffset();
-      } else {
-        delta = _pointerCurrentPosition!;
+      newX = num.parse((newX).toStringAsFixed(2)) as double;
+      newY = num.parse((newY).toStringAsFixed(2)) as double;
+      if (count == 100) {
+        print('x: $newX, y: $newY, z: ${event.z}');
+        count = 0;
       }
+      count++;
+      player.setMoveDirection(Vector2(newY, newX));
+    });
 
-      canvas.drawCircle(
-        delta,
-        20,
-        Paint()..color = Colors.white.withAlpha(100),
-      );
-    }
   }
 
   @override
   void onPanStart(DragStartInfo info) {
-    _pointerStartPosition = info.raw.globalPosition;
   }
 
   @override
   void onPanUpdate(DragUpdateInfo info) {
-    _pointerCurrentPosition = info.raw.globalPosition;
-
-    var delta = _pointerCurrentPosition! - _pointerStartPosition!;
-
-    if (delta.distance > _deadZoneRadius) {
-      player.setMoveDirection(Vector2(delta.dx, delta.dy));
-    } else {
-      player.setMoveDirection(Vector2.zero());
-    }
   }
 
   @override
   void onPanEnd(DragEndInfo info) {
-    _pointerStartPosition = null;
-    _pointerCurrentPosition = null;
     player.setMoveDirection(Vector2.zero());
+    _streamSubscription.cancel();
   }
 
   @override
   void onPanCancel() {
-    _pointerStartPosition = null;
-    _pointerCurrentPosition = null;
   }
 
   @override
   void onTapDown(TapDownInfo info) {
     super.onTapDown(info);
-
-    Bullet bullet = Bullet(
-      sprite: _spriteSheet.getSpriteById(28),
-      size: Vector2(64, 64),
-      position: player.position.clone(),
-    );
-    bullet.anchor = Anchor.center;
-    add(bullet);
+    final temp = accelerometerEvents.listen((AccelerometerEvent event) {
+      var newY = num.parse(event.y.toStringAsFixed(2)) as double;
+      var newX = num.parse(event.x.toStringAsFixed(2)) as double;
+      baseX = newX;
+      baseY = newY;
+    });
+    Future.delayed(const Duration(seconds: 1), () => temp.cancel());
   }
 
 }
