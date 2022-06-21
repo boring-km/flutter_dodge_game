@@ -6,32 +6,28 @@ import 'package:flame/components.dart';
 import 'game.dart';
 
 class Enemy extends SpriteComponent with KnowsGameSize, HasGameRef<DodgeGame> {
-  double _speed = 250;
+  final double _speed = 120;
 
-  final EnemyType type;
+  late double _directX;
+  late double _directY;
 
-  Enemy(
-    this.type, {
+  Enemy({
+    required double directX,
+    required double directY,
     Sprite? sprite,
     Vector2? position,
     Vector2? size,
   }) : super(sprite: sprite, position: position, size: size) {
     angle = pi;
+    _directX = directX;
+    _directY = directY;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    var direction = Vector2(0, 1);
-
-    if (type == EnemyType.bottom) {
-      direction = Vector2(0, -1);
-    } else if (type == EnemyType.left) {
-      direction = Vector2(-1, 0);
-    } else if (type == EnemyType.right) {
-      direction = Vector2(1, 0);
-    }
+    var direction = Vector2(_directX, _directY);
 
     position += direction * _speed * dt;
 
@@ -41,4 +37,4 @@ class Enemy extends SpriteComponent with KnowsGameSize, HasGameRef<DodgeGame> {
   }
 }
 
-enum EnemyType { top, bottom, left, right }
+enum EnemyType { top, bottom, left, right, random }
