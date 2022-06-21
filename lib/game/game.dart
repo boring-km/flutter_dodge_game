@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dodge_game/game/enemy_manager.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -10,8 +11,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 class DodgeGame extends FlameGame with PanDetector, TapDetector {
   late Player player;
   late SpriteSheet _spriteSheet;
-  // late EnemyManager _enemyManager;
-
+  late EnemyManager _enemyManager;
 
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
 
@@ -40,8 +40,8 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
 
     add(player);
 
-    // _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
-    // add(_enemyManager);
+    _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
+    add(_enemyManager);
 
     _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
       var newY = event.y - baseY;
@@ -59,16 +59,13 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
       count++;
       player.setMoveDirection(Vector2(newY, newX));
     });
-
   }
 
   @override
-  void onPanStart(DragStartInfo info) {
-  }
+  void onPanStart(DragStartInfo info) {}
 
   @override
-  void onPanUpdate(DragUpdateInfo info) {
-  }
+  void onPanUpdate(DragUpdateInfo info) {}
 
   @override
   void onPanEnd(DragEndInfo info) {
@@ -77,8 +74,7 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
   }
 
   @override
-  void onPanCancel() {
-  }
+  void onPanCancel() {}
 
   @override
   void onTapDown(TapDownInfo info) {
@@ -91,5 +87,4 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
     });
     Future.delayed(const Duration(seconds: 1), () => temp.cancel());
   }
-
 }

@@ -9,6 +9,7 @@ import 'game.dart';
 class EnemyManager extends Component with HasGameRef<DodgeGame> {
   late Timer timer;
   SpriteSheet spriteSheet;
+  Vector2 enemySize = Vector2(12, 12);
   Random random = Random();
 
   EnemyManager({required this.spriteSheet}) : super() {
@@ -16,30 +17,44 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   }
 
   void _spawnEnemy() {
-    Vector2 initialSize = Vector2(64, 64);
+    generateEnemies(EnemyType.top, 2);
+    generateEnemies(EnemyType.bottom, 2);
+    generateEnemies(EnemyType.left, 2);
+    generateEnemies(EnemyType.right, 2);
+  }
 
-    // random.nextDouble() generates a random number between 0 and 1.
-    // Multiplying it by gameRef.size.x makes sure that the value remains between 0 and width of screen.
-    Vector2 position = Vector2(random.nextDouble() * gameRef.size.x, 0);
+  void generateEnemies(EnemyType type, int n) {
+    for (var i = 0; i < n; i++) {
+      var startPosition = Vector2(random.nextDouble() * gameRef.size.x, 0);
+      var anchor = Anchor.topCenter;
 
-    // Clamps the vector such that the enemy sprite remains within the screen.
+      if (type == EnemyType.bottom) {
+        startPosition = Vector2(random.nextDouble() * gameRef.size.x, gameRef.size.y);
+        anchor = Anchor.bottomCenter;
+      } else if (type == EnemyType.left) {
+        startPosition = Vector2(gameRef.size.x, random.nextDouble() * gameRef.size.y);
+        anchor = Anchor.centerLeft;
+      } else if (type == EnemyType.right) {
+        startPosition = Vector2(0, random.nextDouble() * gameRef.size.y);
+        anchor = Anchor.centerRight;
+      }
+
+      Enemy enemy = Enemy(
+        type,
+        sprite: spriteSheet.getSpriteById(11),
+        size: enemySize,
+        position: startPosition,
+      );
+      enemy.anchor = anchor;
+      gameRef.add(enemy);
+    }
+  }
+
+  void setMoveScope(Vector2 position, Vector2 initialSize) {
     position.clamp(
       Vector2.zero() + initialSize / 2,
       gameRef.size - initialSize / 2,
     );
-
-    Enemy enemy = Enemy(
-      sprite: spriteSheet.getSpriteById(11),
-      size: initialSize,
-      position: position,
-    );
-
-    // Makes sure that the enemy sprite is centered.
-    enemy.anchor = Anchor.center;
-
-    // Add it to components list of game instance, instead of EnemyManager.
-    // This ensures the collision detection working correctly.
-    gameRef.add(enemy);
   }
 
   @override
