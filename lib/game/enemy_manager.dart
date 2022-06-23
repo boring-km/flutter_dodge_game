@@ -31,7 +31,6 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
       Enemy enemy = Enemy(
         directX: getRandomDirection(),
         directY: getRandomDirection(),
-        sprite: spriteSheet.getSpriteById(11),
         size: enemySize,
         position: getStartPosition(typeNum),
       );
