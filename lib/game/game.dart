@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:dodge_game/game/enemy_manager.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
@@ -10,7 +12,6 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 class DodgeGame extends FlameGame with PanDetector, TapDetector {
   late Player player;
-  late SpriteSheet _spriteSheet;
   late EnemyManager _enemyManager;
 
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
@@ -24,14 +25,9 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
   Future<void> onLoad() async {
     await images.load('simpleSpace_tilesheet@2.png');
 
-    _spriteSheet = SpriteSheet.fromColumnsAndRows(
-      image: images.fromCache('simpleSpace_tilesheet@2.png'),
-      columns: 8,
-      rows: 6,
-    );
-
+    Image image = await Flame.images.load('profile.png');
     player = Player(
-      sprite: _spriteSheet.getSpriteById(6),
+      sprite: Sprite(image),
       size: Vector2(24, 24),
       position: size / 2,
     );
@@ -40,7 +36,7 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
 
     add(player);
 
-    _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
+    _enemyManager = EnemyManager();
     add(_enemyManager);
 
     _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {

@@ -2,13 +2,11 @@ import 'dart:math';
 
 import 'package:dodge_game/game/enemy.dart';
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 
 import 'game.dart';
 
 class EnemyManager extends Component with HasGameRef<DodgeGame> {
   late Timer timer;
-  SpriteSheet spriteSheet;
   Vector2 enemySize = Vector2(12, 12);
   Random random = Random();
   Random randomType = Random();
@@ -16,7 +14,7 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   Random directionRandom = Random();
   Random signRandom = Random();
 
-  EnemyManager({required this.spriteSheet}) : super() {
+  EnemyManager() {
     timer = Timer(1, onTick: _spawnEnemy, repeat: true);
   }
 

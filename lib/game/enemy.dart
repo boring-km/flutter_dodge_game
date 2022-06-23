@@ -40,7 +40,6 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, HasGameRef<DodgeG
   void update(double dt) {
     super.update(dt);
 
-    // painter.paint(canvas, size)
     var direction = Vector2(_directX, _directY);
 
     position += direction * _speed * dt;

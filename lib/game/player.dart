@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 class Player extends SpriteComponent with KnowsGameSize, HasGameRef<DodgeGame> {
   Vector2 _moveDirection = Vector2.zero();
 
-  double _speed = 300;
+  final double _speed = 150;
 
   Player({
     Sprite? sprite,
