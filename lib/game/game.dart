@@ -7,7 +7,6 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame/sprite.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class DodgeGame extends FlameGame with PanDetector, TapDetector {
@@ -64,7 +63,7 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector {
   void onPanUpdate(DragUpdateInfo info) {}
 
   @override
-  void onPanEnd(DragEndInfo info) {
+  void onPanEnd(DragEndInfo? info) {
     player.setMoveDirection(Vector2.zero());
     _streamSubscription.cancel();
   }
