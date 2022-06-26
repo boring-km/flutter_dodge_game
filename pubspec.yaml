@@ -32,3 +32,15 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+
+  fonts:
+    - family: Merriweather
+      fonts:
+        - asset: assets/fonts/Merriweather/Merriweather-Black.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-BlackItalic.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-Bold.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-BoldItalic.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-Italic.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-Light.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-LightItalic.ttf
+        - asset: assets/fonts/Merriweather/Merriweather-Regular.ttf

@@ -1,5 +1,6 @@
 import 'package:dodge_game/presentation/game/game_screen_controller.dart';
 import 'package:dodge_game/presentation/menu/menu_screen_controller.dart';
+import 'package:dodge_game/presentation/score/score_screen_controller.dart';
 import 'package:get/get.dart';
 
 class MenuScreenBindings extends Bindings {
@@ -13,5 +14,12 @@ class GameScreenBindings extends Bindings {
   @override
   void dependencies() {
     Get.put(GameScreenController());
+  }
+}
+
+class ScoreScreenBindings extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(ScoreScreenController());
   }
 }
