@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:dodge_game/game/knows_game_size.dart';
+import 'package:dodge_game/game/player.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import 'game.dart';
 
-class Enemy extends CustomPainterComponent with KnowsGameSize, HasGameRef<DodgeGame> {
+class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
   final double _speed = 120;
 
   late double _directX;
@@ -34,6 +36,21 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, HasGameRef<DodgeG
     angle = pi;
     _directX = directX;
     _directY = directY;
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    print('collision! (player');
+
+    if (other is Player) {
+      destroy();
+    }
+  }
+
+  void destroy() {
+    removeFromParent();
   }
 
   @override

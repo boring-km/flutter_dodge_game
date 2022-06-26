@@ -19,7 +19,7 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   }
 
   void _spawnEnemy() {
-    generateEnemies(15);
+    generateEnemies(40);
   }
 
   void generateEnemies(int n) {
