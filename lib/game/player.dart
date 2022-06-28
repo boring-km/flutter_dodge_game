@@ -18,6 +18,18 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   }) : super(sprite: sprite, position: position, size: size);
 
   @override
+  void onMount() {
+    super.onMount();
+    final shape = CircleHitbox.relative(
+      0.8,
+      parentSize: size,
+      position: size / 2,
+      anchor: Anchor.center,
+    );
+    add(shape);
+  }
+
+  @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 

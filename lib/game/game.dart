@@ -10,7 +10,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-class DodgeGame extends FlameGame with PanDetector, TapDetector {
+class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDetection {
   late Player player;
   late EnemyManager _enemyManager;
   late TextComponent _playerHealth;
