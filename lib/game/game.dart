@@ -70,6 +70,7 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
     _playerHealth.anchor = Anchor.center;
     _playerHealth.positionType = PositionType.viewport;
     add(_playerHealth);
+    _fixPlayerPosition();
   }
 
   @override
@@ -100,6 +101,10 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
   @override
   void onTapDown(TapDownInfo info) {
     super.onTapDown(info);
+    _fixPlayerPosition();
+  }
+
+  void _fixPlayerPosition() {
     final temp = accelerometerEvents.listen((AccelerometerEvent event) {
       var newY = num.parse(event.y.toStringAsFixed(2)) as double;
       var newX = num.parse(event.x.toStringAsFixed(2)) as double;
