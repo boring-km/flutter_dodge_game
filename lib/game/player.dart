@@ -33,8 +33,6 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    print('collision! (player');
-
     if (other is Enemy) {
       if (_health > 0) {
         _health -= 5;

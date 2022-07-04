@@ -84,19 +84,10 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
   }
 
   @override
-  void onPanStart(DragStartInfo info) {}
-
-  @override
-  void onPanUpdate(DragUpdateInfo info) {}
-
-  @override
   void onPanEnd(DragEndInfo? info) {
     player.setMoveDirection(Vector2.zero());
     _streamSubscription.cancel();
   }
-
-  @override
-  void onPanCancel() {}
 
   @override
   void onTapDown(TapDownInfo info) {

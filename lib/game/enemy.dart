@@ -54,8 +54,6 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
-    print('collision! (player');
-
     if (other is Player) {
       destroy();
     }
