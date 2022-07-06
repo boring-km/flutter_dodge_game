@@ -7,13 +7,12 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDetection {
+class DodgeGame extends FlameGame
+    with PanDetector, TapDetector, HasCollisionDetection {
   late Player player;
   late EnemyManager _enemyManager;
-  late TextComponent _playerHealth;
 
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
 
@@ -21,6 +20,18 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
 
   var baseX = 0.0;
   var baseY = 0.0;
+
+  late Function() _playerInitCallback;
+
+  late Function() _healthChangeCallback;
+
+  DodgeGame({
+    required Function() playerInitCallback,
+    required Function() healthChangeCallback,
+  }) {
+    _playerInitCallback = playerInitCallback;
+    _healthChangeCallback = healthChangeCallback;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -31,16 +42,19 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
       sprite: Sprite(image),
       size: Vector2(24, 24),
       position: size / 2,
+      healthChangeCallback: _healthChangeCallback,
     );
 
     player.anchor = Anchor.center;
 
     add(player);
+    _playerInitCallback.call();
 
     _enemyManager = EnemyManager();
     add(_enemyManager);
 
-    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
+    _streamSubscription =
+        accelerometerEvents.listen((AccelerometerEvent event) {
       var newY = event.y - baseY;
       var newX = event.x - baseX;
 
@@ -56,20 +70,6 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
       player.setMoveDirection(Vector2(newY, newX));
     });
 
-    _playerHealth = TextComponent(
-      text: '100%',
-      position: Vector2(size.x / 2, size.y - 20),
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-        ),
-      ),
-    );
-
-    _playerHealth.anchor = Anchor.center;
-    _playerHealth.positionType = PositionType.viewport;
-    add(_playerHealth);
     _fixPlayerPosition();
   }
 
@@ -77,7 +77,6 @@ class DodgeGame extends FlameGame with PanDetector, TapDetector, HasCollisionDet
   void update(double dt) {
     super.update(dt);
 
-    _playerHealth.text = '${player.health}%';
     if (player.health <= 0) {
       pauseEngine();
     }

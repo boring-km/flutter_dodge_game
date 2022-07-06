@@ -13,10 +13,12 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
 
   late double _directX;
   late double _directY;
+  late Function() _removeCallback;
 
   Enemy({
     required double directX,
     required double directY,
+    required Function() removeCallback,
     Vector2? position,
     Vector2? size,
     Vector2? scale,
@@ -34,6 +36,7 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
           priority: priority,
         ) {
     angle = pi;
+    _removeCallback = removeCallback;
     _directX = directX;
     _directY = directY;
   }
@@ -71,9 +74,19 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
 
     position += direction * _speed * dt;
 
-    if (position.y > gameRef.size.y) {
+    if (position.y > gameRef.size.y
+        || position.y < -50
+        || position.x > gameRef.size.x
+        || position.x < -50) {
       removeFromParent();
     }
+  }
+
+
+  @override
+  void removeFromParent() {
+    _removeCallback.call();
+    super.removeFromParent();
   }
 
   @override
@@ -83,7 +96,7 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
     canvas.drawCircle(
       const Offset(0, 0),
       8,
-      Paint()..color = Colors.white.withAlpha(100),
+      Paint()..color = Colors.yellow,
     );
   }
 }

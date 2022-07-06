@@ -10,12 +10,16 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   final double _speed = 150;
   int _health = 100;
   int get health => _health;
+  late Function() _healthChangeCallback;
 
   Player({
     Sprite? sprite,
     Vector2? position,
     Vector2? size,
-  }) : super(sprite: sprite, position: position, size: size);
+    required Function() healthChangeCallback,
+  }) : super(sprite: sprite, position: position, size: size) {
+    _healthChangeCallback = healthChangeCallback;
+  }
 
   @override
   void onMount() {
@@ -37,6 +41,7 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
       if (_health > 0) {
         _health -= 5;
       }
+      _healthChangeCallback.call();
     }
   }
 

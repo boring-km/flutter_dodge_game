@@ -6,7 +6,6 @@ import 'package:flame/components.dart';
 import 'game.dart';
 
 class EnemyManager extends Component with HasGameRef<DodgeGame> {
-  late Timer timer;
   Vector2 enemySize = Vector2(12, 12);
   Random random = Random();
   Random randomType = Random();
@@ -14,13 +13,7 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   Random directionRandom = Random();
   Random signRandom = Random();
 
-  EnemyManager() {
-    timer = Timer(1, onTick: _spawnEnemy, repeat: true);
-  }
-
-  void _spawnEnemy() {
-    generateEnemies(40);
-  }
+  int _enemyCount = 0;
 
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
@@ -31,6 +24,9 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
         directY: getRandomDirection(),
         size: enemySize,
         position: getStartPosition(typeNum),
+        removeCallback: () {
+          _enemyCount -= 1;
+        },
       );
       enemy.anchor = getAnchor(typeNum);
       gameRef.add(enemy);
@@ -54,20 +50,15 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   }
 
   Vector2 getStartPosition(int typeNum) {
-    var startPosition = Vector2(getRandomX(), 0);
-    // var anchor = Anchor.topCenter;
+    var startPosition = Vector2(getRandomX(), 1);
     if (typeNum == 0) {
-      startPosition = Vector2(getRandomX(), 0);
-      // anchor = Anchor.topCenter;
+      startPosition = Vector2(getRandomX(), 1);
     } else if (typeNum == 1) {
       startPosition = Vector2(getRandomX(), gameRef.size.y);
-      // anchor = Anchor.bottomCenter;
     } else if (typeNum == 2) {
       startPosition = Vector2(gameRef.size.x, getRandomY());
-      // anchor = Anchor.centerLeft;
     } else {
-      startPosition = Vector2(0, getRandomY());
-      // anchor = Anchor.centerRight;
+      startPosition = Vector2(1, getRandomY());
     }
     return startPosition;
   }
@@ -84,14 +75,13 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
   }
 
   @override
-  void onMount() {
-    super.onMount();
-    timer.start();
-  }
-
-  @override
   void update(double dt) {
     super.update(dt);
-    timer.update(dt);
+
+    if (_enemyCount < 20) {
+      var target = 20 - _enemyCount;
+      generateEnemies(target);
+      _enemyCount += target;
+    }
   }
 }
