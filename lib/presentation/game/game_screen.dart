@@ -5,15 +5,13 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class GameScreen extends GetView<GameScreenController> {
+class GameScreen extends GetView {
   const GameScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dodgeGame = DodgeGame(
-      playerInitCallback: controller.playerCallback,
-      healthChangeCallback: controller.healthChangeCallback,
-    );
+
+    final dodgeGame = DodgeGame();
 
     return Scaffold(
       body: Stack(

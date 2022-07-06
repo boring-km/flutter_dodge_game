@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:dodge_game/game/enemy_manager.dart';
 import 'package:dodge_game/game/player.dart';
+import 'package:dodge_game/presentation/game/game_screen_controller.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class DodgeGame extends FlameGame
@@ -17,42 +18,41 @@ class DodgeGame extends FlameGame
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
 
   var count = 0;
-
   var baseX = 0.0;
   var baseY = 0.0;
 
-  late Function() _playerInitCallback;
-
-  late Function() _healthChangeCallback;
-
-  DodgeGame({
-    required Function() playerInitCallback,
-    required Function() healthChangeCallback,
-  }) {
-    _playerInitCallback = playerInitCallback;
-    _healthChangeCallback = healthChangeCallback;
-  }
+  final GameScreenController _controller = Get.find<GameScreenController>();
 
   @override
   Future<void> onLoad() async {
     await images.load('simpleSpace_tilesheet@2.png');
 
-    ui.Image image = await Flame.images.load('profile.png');
+    await initPlayer();
+    initEnemy();
+  }
+
+  void initEnemy() {
+    _enemyManager = EnemyManager();
+    add(_enemyManager);
+  }
+
+  Future<void> initPlayer() async {
     player = Player(
-      sprite: Sprite(image),
+      sprite: Sprite(await Flame.images.load('profile.png')),
       size: Vector2(24, 24),
       position: size / 2,
-      healthChangeCallback: _healthChangeCallback,
+      healthChangeCallback: _controller.healthChangeCallback,
     );
 
     player.anchor = Anchor.center;
-
     add(player);
-    _playerInitCallback.call();
+    _controller.playerCallback();
 
-    _enemyManager = EnemyManager();
-    add(_enemyManager);
+    initializeMovement();
+    _fixPlayerPosition();
+  }
 
+  void initializeMovement() {
     _streamSubscription =
         accelerometerEvents.listen((AccelerometerEvent event) {
       var newY = event.y - baseY;
@@ -69,8 +69,6 @@ class DodgeGame extends FlameGame
       count++;
       player.setMoveDirection(Vector2(newY, newX));
     });
-
-    _fixPlayerPosition();
   }
 
   @override
