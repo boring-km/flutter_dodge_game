@@ -24,8 +24,9 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   @override
   void onMount() {
     super.onMount();
-    final shape = CircleHitbox.relative(
-      0.8,
+
+    final shape = RectangleHitbox.relative(
+      Vector2(1, 1),
       parentSize: size,
       position: size / 2,
       anchor: Anchor.center,
