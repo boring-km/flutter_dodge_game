@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:dodge_game/game/enemy_manager.dart';
+import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
+import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:dodge_game/presentation/game/game_screen_controller.dart';
 import 'package:flame/components.dart';
@@ -13,8 +14,8 @@ import 'package:sensors_plus/sensors_plus.dart';
 class DodgeGame extends FlameGame
     with PanDetector, TapDetector, HasCollisionDetection {
   late Player player;
-  late EnemyManager _enemyManager;
-
+  late RandomEnemyGenerator _randomEnemyGenerator;
+  late TrackingEnemyGenerator _trackingEnemyGenerator;
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
 
   var count = 0;
@@ -32,8 +33,11 @@ class DodgeGame extends FlameGame
   }
 
   void initEnemy() {
-    _enemyManager = EnemyManager();
-    add(_enemyManager);
+    _randomEnemyGenerator = RandomEnemyGenerator();
+    _trackingEnemyGenerator = TrackingEnemyGenerator(
+        playerX: player.position.x, playerY: player.position.y);
+    add(_randomEnemyGenerator);
+    add(_trackingEnemyGenerator);
   }
 
   Future<void> initPlayer() async {

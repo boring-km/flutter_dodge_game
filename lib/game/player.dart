@@ -1,4 +1,4 @@
-import 'package:dodge_game/game/enemy.dart';
+import 'package:dodge_game/game/enemy/enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/knows_game_size.dart';
 import 'package:flame/collisions.dart';
