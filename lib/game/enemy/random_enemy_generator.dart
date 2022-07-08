@@ -27,6 +27,7 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
         size: enemySize,
         color: Colors.yellow,
         position: getStartPosition(typeNum),
+        speed: 120,
         removeCallback: () {
           _enemyCount -= 1;
         },

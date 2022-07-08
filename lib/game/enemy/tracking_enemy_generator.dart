@@ -32,11 +32,12 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
       final startPosition = getStartPosition(typeNum);
 
       Enemy enemy = Enemy(
-        directX: fromPlayerToEnemyX(startPosition),
-        directY: fromPlayerToEnemyY(startPosition),
+        directX: _playerX - startPosition.x,
+        directY: _playerY - startPosition.y,
         size: enemySize,
         color: Colors.lightBlueAccent,
         position: startPosition,
+        speed: 3,
         removeCallback: () {
           _enemyCount -= 1;
         },
@@ -86,14 +87,12 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
     );
   }
 
-  // TODO 아직 제대로 동작하고 있지 않음
-  fromPlayerToEnemyX(Vector2 startPosition) {
-    return (startPosition.y - _playerY) / gameRef.size.y;
+  double fromPlayerToEnemyX(Vector2 startPosition) {
+    return (_playerX - startPosition.x) / 240;
   }
 
-  // TODO 아직 제대로 동작하고 있지 않음
-  fromPlayerToEnemyY(Vector2 startPosition) {
-    return (startPosition.x - _playerX) / gameRef.size.x;
+  double fromPlayerToEnemyY(Vector2 startPosition) {
+    return (_playerY - startPosition.y) / 240;
   }
 
   @override
