@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dodge_game/game/enemy/enemy.dart';
+import 'package:dodge_game/game/player.dart';
 import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +13,14 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   Random random = Random();
   Random randomType = Random();
 
-  late double _playerX;
-  late double _playerY;
+  late Player _player;
 
   int _enemyCount = 0;
 
   TrackingEnemyGenerator({
-    required double playerX,
-    required double playerY,
+    required Player player,
   }) {
-    _playerX = playerX;
-    _playerY = playerY;
+    _player = player;
   }
 
   void generateEnemies(int n) {
@@ -32,8 +30,8 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
       final startPosition = getStartPosition(typeNum);
 
       Enemy enemy = Enemy(
-        directX: _playerX - startPosition.x,
-        directY: _playerY - startPosition.y,
+        directX: _player.x - startPosition.x,
+        directY: _player.y - startPosition.y,
         size: enemySize,
         color: Colors.lightBlueAccent,
         position: startPosition,
@@ -88,11 +86,11 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   }
 
   double fromPlayerToEnemyX(Vector2 startPosition) {
-    return (_playerX - startPosition.x) / 240;
+    return (_player.x - startPosition.x) / 240;
   }
 
   double fromPlayerToEnemyY(Vector2 startPosition) {
-    return (_playerY - startPosition.y) / 240;
+    return (_player.y - startPosition.y) / 240;
   }
 
   @override

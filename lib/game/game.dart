@@ -34,8 +34,7 @@ class DodgeGame extends FlameGame
 
   void initEnemy() {
     _randomEnemyGenerator = RandomEnemyGenerator();
-    _trackingEnemyGenerator = TrackingEnemyGenerator(
-        playerX: player.position.x, playerY: player.position.y);
+    _trackingEnemyGenerator = TrackingEnemyGenerator(player: player);
     add(_randomEnemyGenerator);
     add(_trackingEnemyGenerator);
   }
