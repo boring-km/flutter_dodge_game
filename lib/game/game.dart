@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
 import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
@@ -9,20 +8,15 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-class DodgeGame extends FlameGame
-    with PanDetector, TapDetector, HasCollisionDetection {
 class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, HasCollisionDetection {
   late Player player;
   late RandomEnemyGenerator _randomEnemyGenerator;
   late TrackingEnemyGenerator _trackingEnemyGenerator;
-  late StreamSubscription<AccelerometerEvent> _streamSubscription;
-  late EnemyManager _enemyManager;
   late TextComponent _playerHealth;
-
-  // late StreamSubscription<AccelerometerEvent> _streamSubscription;
 
   var count = 0;
   var baseX = 0.0;
@@ -46,8 +40,6 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
   }
 
   Future<void> initPlayer() async {
-    ui.Image image = await Flame.images.load('profile.png');
-
     final joystick1 = JoystickComponent(
       anchor: Anchor.bottomLeft,
       position: Vector2(30, size.y - 30),
@@ -73,7 +65,6 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
 
     player = Player(
       sprite: Sprite(await Flame.images.load('profile.png')),
-      sprite: Sprite(image),
       joystickLeft: joystick1,
       joystickRight: joystick2,
       size: Vector2(24, 24),
@@ -90,38 +81,6 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
   }
 
   void initializeMovement() {
-    _streamSubscription =
-        accelerometerEvents.listen((AccelerometerEvent event) {
-      var newY = event.y - baseY;
-      var newX = event.x - baseX;
-
-      if (-0.1 <= newX && newX <= 0.1) newX = 0.0;
-      if (-0.1 <= newY && newY <= 0.1) newY = 0.0;
-
-      newX = num.parse((newX).toStringAsFixed(2)) as double;
-      newY = num.parse((newY).toStringAsFixed(2)) as double;
-      if (count == 100) {
-        count = 0;
-      }
-      count++;
-      player.setMoveDirection(Vector2(newY, newX));
-    });
-    // _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
-    //   var newY = event.y - baseY;
-    //   var newX = event.x - baseX;
-    //
-    //   if (-0.1 <= newX && newX <= 0.1) newX = 0.0;
-    //   if (-0.1 <= newY && newY <= 0.1) newY = 0.0;
-    //
-    //   newX = num.parse((newX).toStringAsFixed(2)) as double;
-    //   newY = num.parse((newY).toStringAsFixed(2)) as double;
-    //   if (count == 100) {
-    //     count = 0;
-    //   }
-    //   count++;
-    //   player.setMoveDirection(Vector2(newY, newX));
-    // });
-
     _playerHealth = TextComponent(
       text: '100%',
       position: Vector2(size.x / 2, size.y - 20),
@@ -149,10 +108,7 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
   }
 
   @override
-  void onPanEnd(DragEndInfo? info) {
-    player.setMoveDirection(Vector2.zero());
-    // _streamSubscription.cancel();
-  }
+  void onPanEnd(DragEndInfo? info) {}
 
   @override
   void onTapDown(TapDownInfo info) {

@@ -67,6 +67,4 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
       gameRef.size - size / 2,
     );
   }
-
-  void setMoveDirection(Vector2 newMoveDirection) {}
 }
