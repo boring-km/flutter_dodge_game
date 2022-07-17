@@ -5,7 +5,9 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
-  Vector2 _moveDirection = Vector2.zero();
+  // Player joystick
+  JoystickComponent joystickLeft;
+  JoystickComponent joystickRight;
 
   final double _speed = 150;
   int _health = 100;
@@ -13,6 +15,8 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
 
   Player({
     Sprite? sprite,
+    required this.joystickLeft,
+    required this.joystickRight,
     Vector2? position,
     Vector2? size,
   }) : super(sprite: sprite, position: position, size: size);
@@ -44,7 +48,13 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   void update(double dt) {
     super.update(dt);
 
-    position += _moveDirection.normalized() * _speed * dt;
+    // position += _moveDirection.normalized() * _speed * dt;
+    if (!joystickLeft.delta.isZero()) {
+      position.add(joystickLeft.relativeDelta * _speed * dt);
+    }
+    if (!joystickRight.delta.isZero()) {
+      position.add(joystickRight.relativeDelta * _speed * dt);
+    }
 
     position.clamp(
       Vector2.zero() + size / 2,
@@ -52,7 +62,5 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
     );
   }
 
-  void setMoveDirection(Vector2 newMoveDirection) {
-    _moveDirection = newMoveDirection;
-  }
+  void setMoveDirection(Vector2 newMoveDirection) {}
 }
