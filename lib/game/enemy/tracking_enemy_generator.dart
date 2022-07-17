@@ -1,43 +1,50 @@
 import 'dart:math';
 
-import 'package:dodge_game/game/enemy.dart';
+import 'package:dodge_game/game/enemy/enemy.dart';
+import 'package:dodge_game/game/player.dart';
+import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
-import 'game.dart';
+import '../game.dart';
 
-class EnemyManager extends Component with HasGameRef<DodgeGame> {
-  late Timer timer;
+class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   Vector2 enemySize = Vector2(12, 12);
   Random random = Random();
   Random randomType = Random();
 
-  Random directionRandom = Random();
-  Random signRandom = Random();
+  late Player _player;
 
-  EnemyManager() {
-    timer = Timer(1, onTick: _spawnEnemy, repeat: true);
-  }
+  int _enemyCount = 0;
 
-  void _spawnEnemy() {
-    generateEnemies(40);
+  TrackingEnemyGenerator({
+    required Player player,
+  }) {
+    _player = player;
   }
 
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
-      int typeNum = (randomType.nextDouble() * 4).toInt();
+
+      final typeNum = (randomType.nextDouble() * 4).toInt();
+      final startPosition = getStartPosition(typeNum);
 
       Enemy enemy = Enemy(
-        directX: getRandomDirection(),
-        directY: getRandomDirection(),
+        directX: _player.x - startPosition.x,
+        directY: _player.y - startPosition.y,
         size: enemySize,
-        position: getStartPosition(typeNum),
+        color: Colors.lightBlueAccent,
+        position: startPosition,
+        speed: 3,
+        removeCallback: () {
+          _enemyCount -= 1;
+        },
       );
       enemy.anchor = getAnchor(typeNum);
       gameRef.add(enemy);
     }
+    _enemyCount += n;
   }
-
-  double getRandomDirection() => signRandom.nextDouble() < 0.5 ? -directionRandom.nextDouble() - 1 : directionRandom.nextDouble() + 1;
 
   Anchor getAnchor(int typeNum) {
     var anchor = Anchor.topCenter;
@@ -55,19 +62,14 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
 
   Vector2 getStartPosition(int typeNum) {
     var startPosition = Vector2(getRandomX(), 0);
-    // var anchor = Anchor.topCenter;
     if (typeNum == 0) {
       startPosition = Vector2(getRandomX(), 0);
-      // anchor = Anchor.topCenter;
     } else if (typeNum == 1) {
       startPosition = Vector2(getRandomX(), gameRef.size.y);
-      // anchor = Anchor.bottomCenter;
     } else if (typeNum == 2) {
       startPosition = Vector2(gameRef.size.x, getRandomY());
-      // anchor = Anchor.centerLeft;
     } else {
       startPosition = Vector2(0, getRandomY());
-      // anchor = Anchor.centerRight;
     }
     return startPosition;
   }
@@ -83,15 +85,20 @@ class EnemyManager extends Component with HasGameRef<DodgeGame> {
     );
   }
 
-  @override
-  void onMount() {
-    super.onMount();
-    timer.start();
+  double fromPlayerToEnemyX(Vector2 startPosition) {
+    return (_player.x - startPosition.x) / 240;
+  }
+
+  double fromPlayerToEnemyY(Vector2 startPosition) {
+    return (_player.y - startPosition.y) / 240;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    timer.update(dt);
+    final diff = GameOptions.trackerCount - _enemyCount;
+    if (diff > 0) {
+      generateEnemies(diff);
+    }
   }
 }

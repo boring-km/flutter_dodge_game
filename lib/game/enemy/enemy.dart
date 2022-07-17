@@ -6,17 +6,22 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import 'game.dart';
+import '../game.dart';
 
 class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
-  final double _speed = 120;
 
   late double _directX;
   late double _directY;
+  late Function()? _removeCallback;
+  late Color _color;
+  late double _speed;
 
   Enemy({
     required double directX,
     required double directY,
+    required Function()? removeCallback,
+    required Color color,
+    required double speed,
     Vector2? position,
     Vector2? size,
     Vector2? scale,
@@ -34,8 +39,11 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
           priority: priority,
         ) {
     angle = pi;
+    _removeCallback = removeCallback;
     _directX = directX;
     _directY = directY;
+    _color = color;
+    _speed = speed;
   }
 
   @override
@@ -69,11 +77,21 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
 
     var direction = Vector2(_directX, _directY);
 
-    position += direction * _speed * dt;
+    position += direction * _speed / 10 * dt;
 
-    if (position.y > gameRef.size.y) {
+    if (position.y > gameRef.size.y
+        || position.y < -50
+        || position.x > gameRef.size.x
+        || position.x < -50) {
       removeFromParent();
     }
+  }
+
+
+  @override
+  void removeFromParent() {
+    _removeCallback?.call();
+    super.removeFromParent();
   }
 
   @override
@@ -83,9 +101,7 @@ class Enemy extends CustomPainterComponent with KnowsGameSize, CollisionCallback
     canvas.drawCircle(
       const Offset(0, 0),
       8,
-      Paint()..color = Colors.white.withAlpha(100),
+      Paint()..color = _color,
     );
   }
 }
-
-enum EnemyType { top, bottom, left, right, random }

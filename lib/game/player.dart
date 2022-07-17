@@ -1,4 +1,4 @@
-import 'package:dodge_game/game/enemy.dart';
+import 'package:dodge_game/game/enemy/enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/knows_game_size.dart';
 import 'package:flame/collisions.dart';
@@ -12,6 +12,7 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   final double _speed = 150;
   int _health = 100;
   int get health => _health;
+  late Function() _healthChangeCallback;
 
   Player({
     Sprite? sprite,
@@ -19,13 +20,17 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
     required this.joystickRight,
     Vector2? position,
     Vector2? size,
-  }) : super(sprite: sprite, position: position, size: size);
+    required Function() healthChangeCallback,
+  }) : super(sprite: sprite, position: position, size: size) {
+    _healthChangeCallback = healthChangeCallback;
+  }
 
   @override
   void onMount() {
     super.onMount();
-    final shape = CircleHitbox.relative(
-      0.8,
+
+    final shape = RectangleHitbox.relative(
+      Vector2(1, 1),
       parentSize: size,
       position: size / 2,
       anchor: Anchor.center,
@@ -41,6 +46,7 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
       if (_health > 0) {
         _health -= 5;
       }
+      _healthChangeCallback.call();
     }
   }
 
