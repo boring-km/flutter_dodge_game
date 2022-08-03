@@ -14,8 +14,8 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   Random randomType = Random();
 
   late Player _player;
-
   int _enemyCount = 0;
+  double enemySpeed = 5;
 
   TrackingEnemyGenerator({
     required Player player,
@@ -33,7 +33,7 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
         size: enemySize,
         color: Colors.lightBlueAccent,
         position: startPosition,
-        speed: 3,
+        speed: enemySpeed,
         removeCallback: () {
           _enemyCount -= 1;
         },
