@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:dodge_game/game/enemy/enemy.dart';
 import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../game.dart';
+import 'random_enemy.dart';
 
 class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   Vector2 enemySize = Vector2(12, 12);
@@ -21,7 +21,7 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
     for (var i = 0; i < n; i++) {
       int typeNum = (randomType.nextDouble() * 4).toInt();
 
-      Enemy enemy = Enemy(
+      RandomEnemy enemy = RandomEnemy(
         directX: getDirectX(typeNum),
         directY: getDirectY(typeNum),
         size: enemySize,

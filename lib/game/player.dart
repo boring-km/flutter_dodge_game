@@ -1,8 +1,9 @@
-import 'package:dodge_game/game/enemy/enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/knows_game_size.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+
+import 'enemy/enemy.dart';
 
 class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
   // Player joystick
@@ -54,7 +55,6 @@ class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, Has
   void update(double dt) {
     super.update(dt);
 
-    // position += _moveDirection.normalized() * _speed * dt;
     if (!joystickLeft.delta.isZero()) {
       position.add(joystickLeft.relativeDelta * _speed * dt);
     }
