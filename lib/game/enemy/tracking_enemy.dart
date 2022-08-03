@@ -14,6 +14,7 @@ class TrackingEnemy extends CustomPainterComponent with KnowsGameSize, Collision
   late Function()? _removeCallback;
   late Color _color;
   late double _speed;
+  final nearLimit = 70.0;
 
   TrackingEnemy({
     required Player player,
@@ -68,15 +69,36 @@ class TrackingEnemy extends CustomPainterComponent with KnowsGameSize, Collision
     removeFromParent();
   }
 
+  double xOut = 0;
+  double yOut = 0;
+
   @override
   void update(double dt) {
     super.update(dt);
 
-    var x = _player.x - position.x;
-    var y = _player.y - position.y;
+    var x = xOut == 0 ? _player.x - position.x : xOut;
+    var y = yOut == 0 ? _player.y - position.y : yOut;
+
+    if (x.abs() < nearLimit) {
+      if (x < 0) {
+        x = -nearLimit;
+      } else {
+        x = nearLimit;
+      }
+      xOut = x;
+    }
+    if (y.abs() < nearLimit) {
+      if (y < 0) {
+        y = -nearLimit;
+      } else {
+        y = nearLimit;
+      }
+      yOut = y;
+    }
+
     var direction = Vector2(x, y);
 
-    position += direction * _speed / 10 * dt;
+    position += direction * _speed / 5 * dt;
 
     if (position.y > gameRef.size.y || position.y < -50 || position.x > gameRef.size.x || position.x < -50) {
       removeFromParent();
