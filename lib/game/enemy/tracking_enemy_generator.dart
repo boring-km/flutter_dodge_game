@@ -1,14 +1,19 @@
 import 'dart:math';
 
 import 'package:dodge_game/game/enemy/tracking_enemy.dart';
+import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-import '../game.dart';
-
 class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
+  TrackingEnemyGenerator({
+    required Player player,
+  }) {
+    _player = player;
+  }
+
   Vector2 enemySize = Vector2(12, 12);
   Random random = Random();
   Random randomType = Random();
@@ -17,18 +22,12 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   int _enemyCount = 0;
   double enemySpeed = 5;
 
-  TrackingEnemyGenerator({
-    required Player player,
-  }) {
-    _player = player;
-  }
-
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
       final typeNum = (randomType.nextDouble() * 4).toInt();
       final startPosition = getStartPosition(typeNum);
 
-      TrackingEnemy enemy = TrackingEnemy(
+      final enemy = TrackingEnemy(
         player: _player,
         size: enemySize,
         color: Colors.lightBlueAccent,
@@ -37,8 +36,7 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
         removeCallback: () {
           _enemyCount -= 1;
         },
-      );
-      enemy.anchor = getAnchor(typeNum);
+      )..anchor = getAnchor(typeNum);
       gameRef.add(enemy);
     }
     _enemyCount += n;

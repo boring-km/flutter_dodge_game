@@ -1,30 +1,30 @@
+import 'package:dodge_game/game/enemy/enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/knows_game_size.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-import 'enemy/enemy.dart';
-
-class Player extends SpriteComponent with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
+class Player extends SpriteComponent
+    with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
+  Player({
+    super.sprite,
+    required this.joystickLeft,
+    required this.joystickRight,
+    super.position,
+    super.size,
+    required Function healthChangeCallback,
+  }) {
+    _healthChangeCallback = healthChangeCallback;
+  }
   // Player joystick
   JoystickComponent joystickLeft;
   JoystickComponent joystickRight;
 
   final double _speed = 150;
   int _health = 100;
-  int get health => _health;
-  late Function() _healthChangeCallback;
 
-  Player({
-    Sprite? sprite,
-    required this.joystickLeft,
-    required this.joystickRight,
-    Vector2? position,
-    Vector2? size,
-    required Function() healthChangeCallback,
-  }) : super(sprite: sprite, position: position, size: size) {
-    _healthChangeCallback = healthChangeCallback;
-  }
+  int get health => _health;
+  late Function _healthChangeCallback;
 
   @override
   void onMount() {

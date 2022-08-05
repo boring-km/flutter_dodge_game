@@ -1,10 +1,9 @@
+import 'package:dodge_game/presentation/menu/menu_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'menu_screen_controller.dart';
-
 class MenuScreen extends GetView<MenuScreenController> {
-  const MenuScreen({Key? key}) : super(key: key);
+  const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,9 @@ class MenuScreen extends GetView<MenuScreenController> {
                   fontSize: 64,
                 ),
               ),
-              const SizedBox(height: 80,),
+              const SizedBox(
+                height: 80,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

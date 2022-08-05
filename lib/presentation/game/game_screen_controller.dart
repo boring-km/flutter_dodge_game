@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 class GameScreenController extends GetxController {
-
   bool isLoaded = false;
 
   void playerCallback() {
@@ -9,8 +8,7 @@ class GameScreenController extends GetxController {
     update();
   }
 
-
-  healthChangeCallback() {
+  void healthChangeCallback() {
     update();
   }
 }

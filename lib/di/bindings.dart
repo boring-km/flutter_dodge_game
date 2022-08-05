@@ -14,8 +14,9 @@ class MenuScreenBindings extends Bindings {
 class GameScreenBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(GameMenuController());
-    Get.put(GameScreenController());
+    Get
+      ..put(GameMenuController())
+      ..put(GameScreenController());
   }
 }
 

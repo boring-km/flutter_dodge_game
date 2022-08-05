@@ -1,11 +1,10 @@
 import 'dart:math';
 
+import 'package:dodge_game/game/enemy/random_enemy.dart';
+import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-
-import '../game.dart';
-import 'random_enemy.dart';
 
 class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   Vector2 enemySize = Vector2(12, 12);
@@ -19,9 +18,9 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
 
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
-      int typeNum = (randomType.nextDouble() * 4).toInt();
+      final typeNum = (randomType.nextDouble() * 4).toInt();
 
-      RandomEnemy enemy = RandomEnemy(
+      final enemy = RandomEnemy(
         directX: getDirectX(typeNum),
         directY: getDirectY(typeNum),
         size: enemySize,
@@ -31,17 +30,16 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
         removeCallback: () {
           _enemyCount -= 1;
         },
-      );
-      enemy.anchor = getAnchor(typeNum);
+      )..anchor = getAnchor(typeNum);
       gameRef.add(enemy);
     }
     _enemyCount += n;
   }
 
-  double getDirectX(typeNum) {
-    var condition = signRandom.nextDouble() < 0.5;
-    var minusDirection = -directionRandom.nextDouble() - 1;
-    var plusDirection = directionRandom.nextDouble() + 1;
+  double getDirectX(int typeNum) {
+    final condition = signRandom.nextDouble() < 0.5;
+    final minusDirection = -directionRandom.nextDouble() - 1;
+    final plusDirection = directionRandom.nextDouble() + 1;
 
     if (typeNum == 0) {
       return condition ? minusDirection : plusDirection;
@@ -54,10 +52,10 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
     }
   }
 
-  double getDirectY(typeNum) {
-    var condition = signRandom.nextDouble() < 0.5;
-    var minusDirection = -directionRandom.nextDouble() - 1;
-    var plusDirection = directionRandom.nextDouble() + 1;
+  double getDirectY(int typeNum) {
+    final condition = signRandom.nextDouble() < 0.5;
+    final minusDirection = -directionRandom.nextDouble() - 1;
+    final plusDirection = directionRandom.nextDouble() + 1;
 
     if (typeNum == 0) {
       return plusDirection;

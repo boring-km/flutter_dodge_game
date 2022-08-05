@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ScoreScreen extends GetView<ScoreScreenController> {
-  const ScoreScreen({Key? key}) : super(key: key);
+  const ScoreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text('Score Screen'),
-      )
+      ),
     );
   }
 }

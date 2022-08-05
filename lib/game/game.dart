@@ -12,15 +12,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, HasCollisionDetection {
+class DodgeGame extends FlameGame
+    with PanDetector, HasDraggables, TapDetector, HasCollisionDetection {
   late Player player;
   late RandomEnemyGenerator _randomEnemyGenerator;
   late TrackingEnemyGenerator _trackingEnemyGenerator;
-  late TextComponent _playerHealth;
 
-  var count = 0;
-  var baseX = 0.0;
-  var baseY = 0.0;
+  int count = 0;
+  double baseX = 0;
+  double baseY = 0;
 
   final GameScreenController _controller = Get.find<GameScreenController>();
 
@@ -50,7 +50,7 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
       ),
       knob: CircleComponent(radius: 30),
     );
-    add(joystick1);
+    unawaited(add(joystick1));
     final joystick2 = JoystickComponent(
       anchor: Anchor.bottomRight,
       position: Vector2(size.x - 30, size.y - 30),
@@ -61,7 +61,7 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
       ),
       knob: CircleComponent(radius: 30),
     );
-    add(joystick2);
+    unawaited(add(joystick2));
 
     player = Player(
       sprite: Sprite(await Flame.images.load('profile.png')),
@@ -73,28 +73,9 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
     );
 
     player.anchor = Anchor.center;
-    add(player);
+    unawaited(add(player));
     _controller.playerCallback();
 
-    initializeMovement();
-    _fixPlayerPosition();
-  }
-
-  void initializeMovement() {
-    _playerHealth = TextComponent(
-      text: '100%',
-      position: Vector2(size.x / 2, size.y - 20),
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-        ),
-      ),
-    );
-
-    _playerHealth.anchor = Anchor.center;
-    _playerHealth.positionType = PositionType.viewport;
-    add(_playerHealth);
     _fixPlayerPosition();
   }
 
@@ -118,11 +99,11 @@ class DodgeGame extends FlameGame with PanDetector, HasDraggables, TapDetector, 
 
   void _fixPlayerPosition() {
     final temp = accelerometerEvents.listen((AccelerometerEvent event) {
-      var newY = num.parse(event.y.toStringAsFixed(2)) as double;
-      var newX = num.parse(event.x.toStringAsFixed(2)) as double;
+      final newY = num.parse(event.y.toStringAsFixed(2)) as double;
+      final newX = num.parse(event.x.toStringAsFixed(2)) as double;
       baseX = newX;
       baseY = newY;
     });
-    Future.delayed(const Duration(seconds: 1), () => temp.cancel());
+    Future.delayed(const Duration(seconds: 1), temp.cancel);
   }
 }
