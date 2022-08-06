@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
 import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
 import 'package:dodge_game/game/player.dart';
-import 'package:dodge_game/presentation/game/game_screen_controller.dart';
+import 'package:dodge_game/presentation/game/game_health_controller.dart';
+import 'package:dodge_game/presentation/game/game_timer_controller.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -22,7 +23,8 @@ class DodgeGame extends FlameGame
   double baseX = 0;
   double baseY = 0;
 
-  final GameScreenController _controller = Get.find<GameScreenController>();
+  final GameHealthController _controller = Get.find<GameHealthController>();
+  final GameTimerController _timerController = Get.find<GameTimerController>();
 
   @override
   Future<void> onLoad() async {
@@ -30,6 +32,7 @@ class DodgeGame extends FlameGame
 
     await initPlayer();
     initEnemy();
+    _timerController.start();
   }
 
   void initEnemy() {
@@ -85,6 +88,7 @@ class DodgeGame extends FlameGame
 
     if (player.health <= 0) {
       pauseEngine();
+      _timerController.stop();
     }
   }
 
@@ -105,5 +109,15 @@ class DodgeGame extends FlameGame
       baseY = newY;
     });
     Future.delayed(const Duration(seconds: 1), temp.cancel);
+  }
+
+  void resumeGame() {
+    _timerController.resume();
+    resumeEngine();
+  }
+
+  void pauseGame() {
+    _timerController.pause();
+    pauseEngine();
   }
 }

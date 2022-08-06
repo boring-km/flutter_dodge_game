@@ -7,10 +7,10 @@ class GameMenuController extends GetxController {
 
   void toggleGameState(DodgeGame dodgeGame) {
     if (isPaused) {
-      dodgeGame.resumeEngine();
+      dodgeGame.resumeGame();
       isPaused = false;
     } else {
-      dodgeGame.pauseEngine();
+      dodgeGame.pauseGame();
       isPaused = true;
     }
     update();

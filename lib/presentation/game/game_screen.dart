@@ -1,6 +1,7 @@
 import 'package:dodge_game/game/game.dart';
+import 'package:dodge_game/presentation/game/game_health_controller.dart';
 import 'package:dodge_game/presentation/game/game_menu_controller.dart';
-import 'package:dodge_game/presentation/game/game_screen_controller.dart';
+import 'package:dodge_game/presentation/game/game_timer_controller.dart';
 import 'package:dodge_game/presentation/menu/menu_screen.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,7 @@ class GameScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: GestureDetector(
-                          onTap: () {
-                            controller.toggleGameState(dodgeGame);
-                          },
+                          onTap: () => controller.toggleGameState(dodgeGame),
                           child: DecoratedBox(
                             decoration: const ShapeDecoration(
                               shape: CircleBorder(side: BorderSide()),
@@ -77,7 +76,7 @@ class GameScreen extends StatelessWidget {
               );
             },
           ),
-          GetBuilder<GameScreenController>(
+          GetBuilder<GameHealthController>(
             builder: (controller) {
               if (controller.isLoaded) {
                 return Align(
@@ -98,6 +97,21 @@ class GameScreen extends StatelessWidget {
               }
             },
           ),
+          GetBuilder<GameTimerController>(builder: (controller) {
+            return Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  controller.timeText,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            );
+          })
         ],
       ),
     );
