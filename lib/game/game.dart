@@ -89,6 +89,7 @@ class DodgeGame extends FlameGame
     if (player.health <= 0) {
       pauseEngine();
       _timerController.stop();
+      // TODO Game Over 컨트롤러 호출하기 -> 여기서 점수도 계산해줘야함
     }
   }
 
