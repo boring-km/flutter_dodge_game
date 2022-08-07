@@ -4,6 +4,7 @@ import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
 import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:dodge_game/presentation/game/game_health_controller.dart';
+import 'package:dodge_game/presentation/game/game_over_controller.dart';
 import 'package:dodge_game/presentation/game/game_timer_controller.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
@@ -25,6 +26,7 @@ class DodgeGame extends FlameGame
 
   final GameHealthController _controller = Get.find<GameHealthController>();
   final GameTimerController _timerController = Get.find<GameTimerController>();
+  final GameOverController _gameOverController = Get.find<GameOverController>();
 
   @override
   Future<void> onLoad() async {
@@ -89,7 +91,7 @@ class DodgeGame extends FlameGame
     if (player.health <= 0) {
       pauseEngine();
       _timerController.stop();
-      // TODO Game Over 컨트롤러 호출하기 -> 여기서 점수도 계산해줘야함
+      _gameOverController.gameOver(_timerController.timeText);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:dodge_game/presentation/game/game_health_controller.dart';
 import 'package:dodge_game/presentation/game/game_menu_controller.dart';
+import 'package:dodge_game/presentation/game/game_over_controller.dart';
 import 'package:dodge_game/presentation/game/game_timer_controller.dart';
 import 'package:dodge_game/presentation/menu/menu_screen_controller.dart';
 import 'package:dodge_game/presentation/score/score_screen_controller.dart';
@@ -18,7 +19,8 @@ class GameScreenBindings extends Bindings {
     Get
       ..put(GameMenuController())
       ..put(GameHealthController())
-      ..put(GameTimerController());
+      ..put(GameTimerController())
+      ..put(GameOverController());
   }
 }
 

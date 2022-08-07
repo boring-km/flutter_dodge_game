@@ -1,6 +1,7 @@
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/presentation/game/game_health_controller.dart';
 import 'package:dodge_game/presentation/game/game_menu_controller.dart';
+import 'package:dodge_game/presentation/game/game_over_controller.dart';
 import 'package:dodge_game/presentation/game/game_timer_controller.dart';
 import 'package:dodge_game/presentation/menu/menu_screen.dart';
 import 'package:flame/game.dart';
@@ -97,21 +98,67 @@ class GameScreen extends StatelessWidget {
               }
             },
           ),
-          GetBuilder<GameTimerController>(builder: (controller) {
-            return Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  controller.timeText,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
+          GetBuilder<GameTimerController>(
+            builder: (controller) {
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    controller.timeText,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-              ),
-            );
-          })
+              );
+            },
+          ),
+          GetBuilder<GameOverController>(
+            builder: (controller) {
+              if (controller.isGameOver) {
+                return Center(
+                  child: Container(
+                    decoration: const BoxDecoration(color: Colors.white38),
+                    width: context.width / 3,
+                    height: context.height / 3,
+                    child: Stack(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 8),
+                            child: Text(
+                              'GameOver',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 44,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              controller.getScoreText(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );

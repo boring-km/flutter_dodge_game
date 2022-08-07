@@ -45,7 +45,7 @@ class Player extends SpriteComponent
 
     if (other is Enemy) {
       if (_health > 0) {
-        _health -= 5;
+        _health -= 10;
       }
       _healthChangeCallback.call();
     }
