@@ -28,6 +28,11 @@ class GameTimerController extends GetxController {
     _numTime = 0;
   }
 
+  void restart() {
+    stop();
+    start();
+  }
+
   @override
   void onClose() {
     stop();

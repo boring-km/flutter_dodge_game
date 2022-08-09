@@ -67,4 +67,8 @@ class Player extends SpriteComponent
       gameRef.size - size / 2,
     );
   }
+
+  void revive() {
+    _health = 100;
+  }
 }

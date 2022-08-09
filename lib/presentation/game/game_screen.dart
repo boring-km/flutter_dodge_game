@@ -120,9 +120,9 @@ class GameScreen extends StatelessWidget {
               if (controller.isGameOver) {
                 return Center(
                   child: Container(
-                    decoration: const BoxDecoration(color: Colors.white38),
+                    decoration: const BoxDecoration(color: Colors.white70),
                     width: context.width / 3,
-                    height: context.height / 3,
+                    height: context.height / 2,
                     child: Stack(
                       children: [
                         const Align(
@@ -132,9 +132,18 @@ class GameScreen extends StatelessWidget {
                             child: Text(
                               'GameOver',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 44,
                               ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          child: Text(
+                            controller.getScoreText(),
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
                             ),
                           ),
                         ),
@@ -142,11 +151,20 @@ class GameScreen extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(
-                              controller.getScoreText(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
+                            child: GestureDetector(
+                              onTap: () => controller.restart(dodgeGame),
+                              child: const DecoratedBox(
+                                decoration: BoxDecoration(color: Colors.yellow),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(
+                                    'Restart',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),

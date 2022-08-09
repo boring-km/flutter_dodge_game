@@ -45,28 +45,8 @@ class DodgeGame extends FlameGame
   }
 
   Future<void> initPlayer() async {
-    final joystick1 = JoystickComponent(
-      anchor: Anchor.bottomLeft,
-      position: Vector2(30, size.y - 30),
-      // size: 100,
-      background: CircleComponent(
-        radius: 60,
-        paint: Paint()..color = Colors.white.withOpacity(0.5),
-      ),
-      knob: CircleComponent(radius: 30),
-    );
-    unawaited(add(joystick1));
-    final joystick2 = JoystickComponent(
-      anchor: Anchor.bottomRight,
-      position: Vector2(size.x - 30, size.y - 30),
-      // size: 100,
-      background: CircleComponent(
-        radius: 60,
-        paint: Paint()..color = Colors.white.withOpacity(0.5),
-      ),
-      knob: CircleComponent(radius: 30),
-    );
-    unawaited(add(joystick2));
+    final joystick1 = initJoyStickLeft();
+    final joystick2 = initJoyStickRight();
 
     player = Player(
       sprite: Sprite(await Flame.images.load('profile.png')),
@@ -82,6 +62,36 @@ class DodgeGame extends FlameGame
     _controller.playerCallback();
 
     _fixPlayerPosition();
+  }
+
+  JoystickComponent initJoyStickRight() {
+    final joystick2 = JoystickComponent(
+      anchor: Anchor.bottomRight,
+      position: Vector2(size.x - 30, size.y - 30),
+      // size: 100,
+      background: CircleComponent(
+        radius: 60,
+        paint: Paint()..color = Colors.white.withOpacity(0.5),
+      ),
+      knob: CircleComponent(radius: 30),
+    );
+    unawaited(add(joystick2));
+    return joystick2;
+  }
+
+  JoystickComponent initJoyStickLeft() {
+    final joystick1 = JoystickComponent(
+      anchor: Anchor.bottomLeft,
+      position: Vector2(30, size.y - 30),
+      // size: 100,
+      background: CircleComponent(
+        radius: 60,
+        paint: Paint()..color = Colors.white.withOpacity(0.5),
+      ),
+      knob: CircleComponent(radius: 30),
+    );
+    unawaited(add(joystick1));
+    return joystick1;
   }
 
   @override
@@ -122,5 +132,10 @@ class DodgeGame extends FlameGame
   void pauseGame() {
     _timerController.pause();
     pauseEngine();
+  }
+
+  void restart() {
+    player.revive();
+    resumeEngine();
   }
 }
