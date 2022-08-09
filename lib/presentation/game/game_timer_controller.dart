@@ -30,7 +30,9 @@ class GameTimerController extends GetxController {
 
   void restart() {
     stop();
+    timeText = '0s';
     start();
+    update();
   }
 
   @override

@@ -7,8 +7,4 @@ class GameHealthController extends GetxController {
     isLoaded = true;
     update();
   }
-
-  void healthChangeCallback() {
-    update();
-  }
 }

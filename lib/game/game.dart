@@ -24,7 +24,8 @@ class DodgeGame extends FlameGame
   double baseX = 0;
   double baseY = 0;
 
-  final GameHealthController _controller = Get.find<GameHealthController>();
+  final GameHealthController _healthController =
+      Get.find<GameHealthController>();
   final GameTimerController _timerController = Get.find<GameTimerController>();
   final GameOverController _gameOverController = Get.find<GameOverController>();
 
@@ -54,12 +55,12 @@ class DodgeGame extends FlameGame
       joystickRight: joystick2,
       size: Vector2(24, 24),
       position: size / 2,
-      healthChangeCallback: _controller.healthChangeCallback,
+      healthChangeCallback: _healthController.update,
     );
 
     player.anchor = Anchor.center;
     unawaited(add(player));
-    _controller.playerCallback();
+    _healthController.playerCallback();
 
     _fixPlayerPosition();
   }
@@ -136,6 +137,7 @@ class DodgeGame extends FlameGame
 
   void restart() {
     player.revive();
+    _healthController.update();
     resumeEngine();
   }
 }
