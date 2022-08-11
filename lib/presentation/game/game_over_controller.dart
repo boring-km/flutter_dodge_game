@@ -29,20 +29,23 @@ class GameOverController extends GetxController {
   }
 
   Future<void> _saveScore(String time) async {
-    final db = await _getDb();
-    final now = DateTime.now();
-    final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
+    final path = join(await getDatabasesPath(), 'score.db');
+    await deleteDatabase(path);
 
-    await db.transaction((txn) async {
-      await txn.rawInsert(
-        'INSERT INTO Score(num, time) VALUES($time, "$formattedDate")',
-      );
-    });
-
-    final list = await db.rawQuery('SELECT * FROM Score');
-    for (final item in list) {
-      print(item);
-    }
+    // final db = await _getDb();
+    // final now = DateTime.now();
+    // final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
+    //
+    // await db.transaction((txn) async {
+    //   await txn.rawInsert(
+    //     'INSERT INTO Score(num, time) VALUES($time, "$formattedDate")',
+    //   );
+    // });
+    //
+    // final list = await db.rawQuery('SELECT * FROM Score');
+    // for (final item in list) {
+    //   print(item);
+    // }
   }
 
   Future<Database> _getDb() async {
