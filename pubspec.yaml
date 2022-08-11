@@ -19,14 +19,17 @@ dependencies:
   logger: ^1.1.0
   get: ^4.6.5
   very_good_analysis: ^3.0.1
-  sqflite: ^2.0.3+1
+  hive: ^2.2.3
   intl: ^0.17.0
+  path_provider:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  hive_generator: any
+  build_runner: any
 
 flutter:
 

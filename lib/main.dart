@@ -1,3 +1,4 @@
+
 import 'package:dodge_game/di/bindings.dart';
 import 'package:dodge_game/presentation/game/game_screen.dart';
 import 'package:dodge_game/presentation/menu/menu_screen.dart';
@@ -14,7 +15,7 @@ void main() {
 }
 
 class GameApp extends StatelessWidget {
-  const GameApp({Key? key}) : super(key: key);
+  const GameApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,21 @@ class GameApp extends StatelessWidget {
         fontFamily: 'Merriweather',
       ),
       getPages: [
-        GetPage(name: '/menu', page: () => const MenuScreen(), binding: MenuScreenBindings()),
-        GetPage(name: '/game', page: () => const GameScreen(), binding: GameScreenBindings()),
-        GetPage(name: '/score', page: () => const ScoreScreen(), binding: ScoreScreenBindings()),
+        GetPage(
+          name: '/menu',
+          page: () => const MenuScreen(),
+          binding: MenuScreenBindings(),
+        ),
+        GetPage(
+          name: '/game',
+          page: () => const GameScreen(),
+          binding: GameScreenBindings(),
+        ),
+        GetPage(
+          name: '/score',
+          page: () => const ScoreScreen(),
+          binding: ScoreScreenBindings(),
+        ),
       ],
     );
   }

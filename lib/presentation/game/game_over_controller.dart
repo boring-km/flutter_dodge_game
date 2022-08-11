@@ -1,9 +1,11 @@
+import 'package:dodge_game/data/game_record.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/presentation/game/game_timer_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 class GameOverController extends GetxController {
   bool isGameOver = false;
@@ -29,42 +31,28 @@ class GameOverController extends GetxController {
   }
 
   Future<void> _saveScore(String time) async {
-    final path = join(await getDatabasesPath(), 'score.db');
-    await deleteDatabase(path);
-
-    // final db = await _getDb();
-    // final now = DateTime.now();
-    // final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
-    //
-    // await db.transaction((txn) async {
-    //   await txn.rawInsert(
-    //     'INSERT INTO Score(num, time) VALUES($time, "$formattedDate")',
-    //   );
-    // });
-    //
-    // final list = await db.rawQuery('SELECT * FROM Score');
-    // for (final item in list) {
-    //   print(item);
-    // }
+    final scoreBox = await _openHiveBox('score');
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
+    await scoreBox.add(
+      GameRecord(
+        int.parse(time),
+        formattedDate,
+        'testUserName',
+      ),
+    );
+    for (final key in scoreBox.keys) {
+      print(scoreBox.get(key));
+    }
   }
 
-  Future<Database> _getDb() async {
-    final path = join(await getDatabasesPath(), 'score.db');
-    final db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          '''
-          CREATE TABLE Score(
-            id INTEGER PRIMARY KEY,
-            num INTEGER,
-            time VARCHAR(30) 
-          );
-        ''',
-        );
-      },
-    );
-    return db;
+  Future<Box<GameRecord>> _openHiveBox(String boxName) async {
+    if (!kIsWeb && !Hive.isBoxOpen(boxName)) {
+      Hive
+        ..init((await getApplicationDocumentsDirectory()).path)
+        ..registerAdapter(GameRecordAdapter());
+    }
+
+    return Hive.openBox(boxName);
   }
 }
