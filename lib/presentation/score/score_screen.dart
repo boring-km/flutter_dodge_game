@@ -8,6 +8,7 @@ class ScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -16,33 +17,54 @@ class ScoreScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  'Score',
-                  style: TextStyle(fontSize: 36),
+                  'Scores',
+                  style: TextStyle(fontSize: 36, color: Colors.white),
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Text(
+                      'User Name',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    Text(
+                      'Score',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    Text(
+                      'Saved Time',
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 GetBuilder<ScoreScreenController>(
                   builder: (controller) {
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: controller.scoreList.length + 1,
+                        itemCount: controller.scoreList.length,
                         itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text('User Name'),
-                                Text('Score'),
-                                Text('Saved Time')
-                              ],
-                            );
-                          }
-                          final score = controller.scoreList[index-1];
+                          final score = controller.scoreList[index];
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(score.userName),
-                              Text('${score.num}s'),
-                              Text(score.time)
+                              Text(
+                                score.userName,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                '${score.num}s',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                score.time,
+                                style: TextStyle(color: Colors.white),
+                              )
                             ],
                           );
                         },
