@@ -7,6 +7,8 @@ class ScoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -24,20 +26,20 @@ class ScoreScreen extends StatelessWidget {
                   height: 30,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Text(
-                      'User Name',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildScoreTextWidget(
+                      width: width,
+                      child: buildMenuText('User Name'),
                     ),
-                    Text(
-                      'Score',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    buildScoreTextWidget(
+                      width: width,
+                      child: buildMenuText('Score'),
                     ),
-                    Text(
-                      'Saved Time',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    )
+                    buildScoreTextWidget(
+                      width: width,
+                      child: buildMenuText('Saved Time'),
+                    ),
                   ],
                 ),
                 const SizedBox(
@@ -50,22 +52,25 @@ class ScoreScreen extends StatelessWidget {
                         itemCount: controller.scoreList.length,
                         itemBuilder: (context, index) {
                           final score = controller.scoreList[index];
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                score.userName,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                '${score.num}s',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                score.time,
-                                style: TextStyle(color: Colors.white),
-                              )
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                buildScoreTextWidget(
+                                  width: width,
+                                  child: buildUserText(score.userName),
+                                ),
+                                buildScoreTextWidget(
+                                  width: width,
+                                  child: buildUserText('${score.num}s'),
+                                ),
+                                buildScoreTextWidget(
+                                  width: width,
+                                  child: buildUserText(score.time),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -76,6 +81,35 @@ class ScoreScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Text buildUserText(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(color: Colors.white),
+    );
+  }
+
+  SizedBox buildScoreTextWidget({
+    required double width,
+    required Text child,
+  }) {
+    return SizedBox(
+      width: width / 4,
+      child: child,
+    );
+  }
+
+  Text buildMenuText(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 24,
       ),
     );
   }
