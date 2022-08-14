@@ -10,6 +10,7 @@ class ScoreScreenController extends GetxController {
   Future<void> getScores() async {
     final records = <GameRecord>[];
     final scoreBox = await openGameRecordBox();
+
     for (final key in scoreBox.keys) {
       final score = scoreBox.get(key);
       if (score != null) {

@@ -28,6 +28,10 @@ class ScoreScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    buildOrderTextWidget(
+                      width: width,
+                      child: buildMenuText('Order'),
+                    ),
                     buildScoreTextWidget(
                       width: width,
                       child: buildMenuText('User Name'),
@@ -57,6 +61,10 @@ class ScoreScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                buildOrderTextWidget(
+                                  width: width,
+                                  child: buildUserText('${index+1}'),
+                                ),
                                 buildScoreTextWidget(
                                   width: width,
                                   child: buildUserText(score.userName),
@@ -98,7 +106,17 @@ class ScoreScreen extends StatelessWidget {
     required Text child,
   }) {
     return SizedBox(
-      width: width / 4,
+      width: width / 5,
+      child: child,
+    );
+  }
+
+  SizedBox buildOrderTextWidget({
+    required double width,
+    required Text child,
+  }) {
+    return SizedBox(
+      width: width / 10,
       child: child,
     );
   }
