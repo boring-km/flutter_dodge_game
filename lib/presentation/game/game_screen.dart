@@ -151,21 +151,46 @@ class GameScreen extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            child: GestureDetector(
-                              onTap: () => controller.restart(dodgeGame),
-                              child: const DecoratedBox(
-                                decoration: BoxDecoration(color: Colors.yellow),
-                                child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    'Restart',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 24,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => controller.restart(dodgeGame),
+                                  child: const DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Text(
+                                        'Restart',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 24,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                GestureDetector(
+                                  onTap: controller.moveToScoreScreen,
+                                  child: const DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Text(
+                                        'Score',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         )

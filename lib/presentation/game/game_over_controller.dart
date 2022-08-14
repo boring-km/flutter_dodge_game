@@ -41,5 +41,7 @@ class GameOverController extends GetxController {
     );
   }
 
+  Future<dynamic>? moveToScoreScreen() => Get.offAndToNamed('/score');
+
 
 }
