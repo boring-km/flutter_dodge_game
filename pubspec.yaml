@@ -26,7 +26,7 @@ dependencies:
   # firebase
   firebase_core: ^1.20.1
   firebase_core_web: ^1.7.1
-  firebase_database: ^9.1.1
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
