@@ -49,3 +49,8 @@ app.*.map.json
 .metadata
 ios/Runner.xcodeproj/project.pbxproj
 ios/Podfile.lock
+
+lib/firebase_options.dart
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+android/app/google-services.json

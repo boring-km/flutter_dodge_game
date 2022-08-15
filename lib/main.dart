@@ -1,15 +1,20 @@
 
 import 'package:dodge_game/di/bindings.dart';
+import 'package:dodge_game/firebase_options.dart';
 import 'package:dodge_game/presentation/game/game_screen.dart';
 import 'package:dodge_game/presentation/menu/menu_screen.dart';
 import 'package:dodge_game/presentation/score/score_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Flame.device.fullScreen();
+  await Flame.device.fullScreen();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const GameApp());
 }
