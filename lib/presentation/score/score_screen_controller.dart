@@ -11,11 +11,11 @@ class ScoreScreenController extends GetxController {
     final records = <GameRecord>[];
     final scoreBox = await openGameRecordBox();
 
-    for (final key in scoreBox.keys) {
-      final score = scoreBox.get(key);
-      if (score != null) {
-        records.add(score);
-      }
+    final values = scoreBox.values.toList()
+        ..sort((GameRecord a, GameRecord b) => a.num.compareTo(b.num));
+
+    for (final score in values) {
+      records.add(score);
     }
     _scoreList = records;
     update();
