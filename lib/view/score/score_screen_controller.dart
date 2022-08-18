@@ -3,7 +3,6 @@ import 'package:dodge_game/provider/get_hive_box.dart';
 import 'package:get/get.dart';
 
 class ScoreScreenController extends GetxController {
-
   List<GameRecord> _scoreList = [];
   List<GameRecord> get scoreList => _scoreList;
 
@@ -12,7 +11,7 @@ class ScoreScreenController extends GetxController {
     final scoreBox = await openGameRecordBox();
 
     final values = scoreBox.values.toList()
-        ..sort((GameRecord a, GameRecord b) => a.num.compareTo(b.num));
+      ..sort((GameRecord a, GameRecord b) => b.num.compareTo(a.num));
 
     for (final score in values) {
       records.add(score);
