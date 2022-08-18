@@ -1,18 +1,20 @@
-import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'game_record.g.dart';
 
-@HiveType(typeId: 1)
-class GameRecord extends HiveObject {
+@JsonSerializable(explicitToJson: true)
+class GameRecord {
   GameRecord(this.num, this.time, this.userName);
 
-  @HiveField(0)
+  factory GameRecord.fromJson(Map<String, dynamic> json) =>
+      _$GameRecordFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GameRecordToJson(this);
+
   final int num;
 
-  @HiveField(1)
   final String time;
 
-  @HiveField(2)
   final String userName;
 
   @override

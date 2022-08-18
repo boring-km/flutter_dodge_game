@@ -1,5 +1,5 @@
 import 'package:dodge_game/data/game_record.dart';
-import 'package:dodge_game/provider/get_hive_box.dart';
+import 'package:dodge_game/provider/get_firebase.dart';
 import 'package:get/get.dart';
 
 class ScoreScreenController extends GetxController {
@@ -8,16 +8,13 @@ class ScoreScreenController extends GetxController {
 
   Future<void> getScores() async {
     final records = <GameRecord>[];
-    final scoreBox = await openGameRecordBox();
-
-    final values = scoreBox.values.toList()
-      ..sort((GameRecord a, GameRecord b) => b.num.compareTo(a.num));
-
-    for (final score in values) {
-      records.add(score);
-    }
-    _scoreList = records;
-    update();
+    FireStore.getData((docs) {
+      for (final doc in docs) {
+        records.add(doc.data());
+      }
+      _scoreList = records;
+      update();
+    });
   }
 
   @override

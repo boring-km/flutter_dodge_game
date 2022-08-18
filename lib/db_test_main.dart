@@ -2,10 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:dodge_game/firebase_options.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dodge_game/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
 /// Requires that a Firestore emulator is running locally.
 /// See https://firebase.flutter.dev/docs/firestore/usage#emulator-usage
@@ -164,7 +164,7 @@ class _FilmListState extends State<FilmList> {
         children: [
           StreamBuilder<QuerySnapshot<Movie>>(
             stream: moviesRef.queryBy(query).snapshots(),
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot<QuerySnapshot<Movie>> snapshot) {
               if (snapshot.hasError) {
                 return Center(
                   child: Text(snapshot.error.toString()),
@@ -244,9 +244,12 @@ class _MovieItem extends StatelessWidget {
   Widget get poster {
     return SizedBox(
       width: 100,
-      child: Image.network(movie.poster, errorBuilder: (context, obj, trace) {
-        return Icon(Icons.close);
-      },),
+      child: Image.network(
+        movie.poster,
+        errorBuilder: (context, obj, trace) {
+          return Icon(Icons.close);
+        },
+      ),
     );
   }
 

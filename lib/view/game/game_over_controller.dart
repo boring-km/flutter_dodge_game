@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:dodge_game/data/game_record.dart';
 import 'package:dodge_game/game/game.dart';
-import 'package:dodge_game/provider/get_hive_box.dart';
+import 'package:dodge_game/provider/get_firebase.dart';
 import 'package:dodge_game/utils/logger.dart';
 import 'package:dodge_game/view/game/game_timer_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,14 +36,15 @@ class GameOverController extends GetxController {
     final currentUser = FirebaseAuth.instance.currentUser;
     Log.i('User nickname: ${currentUser?.displayName}');
 
-    final scoreBox = await openGameRecordBox();
     final now = DateTime.now();
     final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
-    await scoreBox.add(
-      GameRecord(
-        int.parse(time),
-        formattedDate,
-        currentUser?.displayName ?? '',
+    unawaited(
+      FireStore.saveScore(
+        GameRecord(
+          int.parse(time),
+          formattedDate,
+          currentUser?.displayName ?? '',
+        ),
       ),
     );
   }
