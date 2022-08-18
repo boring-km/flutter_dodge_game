@@ -1,11 +1,22 @@
 import 'dart:async';
 
+import 'package:dodge_game/provider/get_shared_prefs.dart';
 import 'package:dodge_game/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreenController extends GetxController {
+  Future<void> autoLogin() async {
+    final loggedPlatform = await LoginSharedPrefs.getLoginPlatform() ?? '';
+    if (loggedPlatform.isEmpty) {
+      return; // 아직 로그인 한 적이 없으면 AutoLogin 할 필요 없음
+    } else {
+      unawaited(login());
+    }
+  }
+
   Future<void> login() async {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
@@ -25,6 +36,7 @@ class LoginScreenController extends GetxController {
           final userCredential = await auth.signInWithCredential(credential);
           final user = userCredential.user;
           if (user != null) {
+            await LoginSharedPrefs.saveLoginPlatform(Buttons.Google.name);
             unawaited(Get.offAndToNamed('/menu'));
           }
         } on Exception {
@@ -39,6 +51,6 @@ class LoginScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Future.microtask(login);
+    Future.microtask(autoLogin);
   }
 }

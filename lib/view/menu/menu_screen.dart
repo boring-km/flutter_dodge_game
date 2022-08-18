@@ -11,46 +11,77 @@ class MenuScreen extends GetView<MenuScreenController> {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              const Text(
-                'Dodge Game',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 64,
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: controller.logout,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            'LOGOUT',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.logout,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(
-                height: 80,
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Dodge Game',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 64,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: controller.startGame,
+                          child: const Text(
+                            'Game Start',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: controller.getScore,
+                          child: const Text(
+                            'Score',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: controller.startGame,
-                    child: const Text(
-                      'Game Start',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: controller.getScore,
-                    child: const Text(
-                      'Score',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
