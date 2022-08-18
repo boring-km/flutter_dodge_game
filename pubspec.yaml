@@ -26,7 +26,15 @@ dependencies:
   # firebase
   firebase_core: ^1.20.1
   firebase_core_web: ^1.7.1
-  cloud_firestore:
+  cloud_firestore: ^3.4.4
+  firebase_auth: ^3.6.3
+  flutter_signin_button: ^2.0.0
+
+  # signin
+  google_sign_in: ^5.4.1
+
+  # fonts
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -42,15 +50,3 @@ flutter:
 
   assets:
     - assets/images/
-
-  fonts:
-    - family: Merriweather
-      fonts:
-        - asset: assets/fonts/Merriweather/Merriweather-Black.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-BlackItalic.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-Bold.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-BoldItalic.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-Italic.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-Light.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-LightItalic.ttf
-        - asset: assets/fonts/Merriweather/Merriweather-Regular.ttf

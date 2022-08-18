@@ -1,5 +1,5 @@
-import 'package:dodge_game/core/get_hive_box.dart';
 import 'package:dodge_game/data/game_record.dart';
+import 'package:dodge_game/provider/get_hive_box.dart';
 import 'package:get/get.dart';
 
 class ScoreScreenController extends GetxController {

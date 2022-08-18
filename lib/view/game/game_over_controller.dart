@@ -1,7 +1,7 @@
-import 'package:dodge_game/core/get_hive_box.dart';
 import 'package:dodge_game/data/game_record.dart';
 import 'package:dodge_game/game/game.dart';
-import 'package:dodge_game/presentation/game/game_timer_controller.dart';
+import 'package:dodge_game/view/game/game_timer_controller.dart';
+import 'package:dodge_game/provider/get_hive_box.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 

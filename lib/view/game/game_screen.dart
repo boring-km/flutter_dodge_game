@@ -1,9 +1,9 @@
 import 'package:dodge_game/game/game.dart';
-import 'package:dodge_game/presentation/game/game_health_controller.dart';
-import 'package:dodge_game/presentation/game/game_menu_controller.dart';
-import 'package:dodge_game/presentation/game/game_over_controller.dart';
-import 'package:dodge_game/presentation/game/game_timer_controller.dart';
-import 'package:dodge_game/presentation/menu/menu_screen.dart';
+import 'package:dodge_game/view/game/game_health_controller.dart';
+import 'package:dodge_game/view/game/game_menu_controller.dart';
+import 'package:dodge_game/view/game/game_over_controller.dart';
+import 'package:dodge_game/view/game/game_timer_controller.dart';
+import 'package:dodge_game/view/menu/menu_screen.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

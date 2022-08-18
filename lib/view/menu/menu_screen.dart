@@ -1,4 +1,4 @@
-import 'package:dodge_game/presentation/menu/menu_screen_controller.dart';
+import 'package:dodge_game/view/menu/menu_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
