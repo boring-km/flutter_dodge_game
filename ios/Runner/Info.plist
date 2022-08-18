@@ -36,7 +36,9 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>com.googleusercontent.apps.94012867422-4rak1iurlampdad0145cn0g9qhpriied</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -62,5 +64,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSBonjourServices</key>
+  <array>
+  	<string>_dartobservatory._tcp</string>
+  </array>
 </dict>
 </plist>
