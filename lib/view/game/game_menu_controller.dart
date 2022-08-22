@@ -1,11 +1,19 @@
 import 'package:dodge_game/game/game.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class GameMenuController extends GetxController {
   bool isPaused = false;
 
+  // late GameOverController _gameOverController;
+
+  @override
+  void onInit() {
+    // _gameOverController = Get.put(GameOverController());
+    super.onInit();
+  }
+
   void toggleGameState(DodgeGame dodgeGame) {
+    if (isGameOver()) {}
     if (isPaused) {
       dodgeGame.resumeGame();
       isPaused = false;
@@ -16,7 +24,7 @@ class GameMenuController extends GetxController {
     update();
   }
 
-  IconData getPauseIcon() {
-    return isPaused ? Icons.play_arrow : Icons.pause;
+  bool isGameOver() {
+    return true; // _gameOverController.isGameOver;
   }
 }

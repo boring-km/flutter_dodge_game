@@ -23,57 +23,89 @@ class GameScreen extends StatelessWidget {
           ),
           GetBuilder<GameMenuController>(
             builder: (controller) {
-              return Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: GestureDetector(
-                          onTap: () => controller.toggleGameState(dodgeGame),
-                          child: DecoratedBox(
-                            decoration: const ShapeDecoration(
-                              shape: CircleBorder(side: BorderSide()),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Icon(
-                                controller.getPauseIcon(),
-                                color: Colors.black,
+              return Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: GestureDetector(
+                              onTap: () =>
+                                  controller.toggleGameState(dodgeGame),
+                              child: DecoratedBox(
+                                decoration: const ShapeDecoration(
+                                  shape: CircleBorder(side: BorderSide()),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: Icon(
+                                    controller.isPaused
+                                        ? Icons.play_arrow
+                                        : Icons.pause,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.back<MenuScreen>();
-                            dodgeGame.onPanEnd(null);
-                          },
-                          child: const DecoratedBox(
-                            decoration: ShapeDecoration(
-                              shape: CircleBorder(side: BorderSide()),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Icon(
-                                Icons.exit_to_app,
-                                color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.back<MenuScreen>();
+                                dodgeGame.onPanEnd(null);
+                              },
+                              child: const DecoratedBox(
+                                decoration: ShapeDecoration(
+                                  shape: CircleBorder(side: BorderSide()),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(
+                                    Icons.exit_to_app,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  Visibility(
+                    visible: controller.isPaused,
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () => controller.toggleGameState(dodgeGame),
+                        child: Container(
+                          width: 150,
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white54,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              controller.isPaused
+                                  ? Icons.play_arrow
+                                  : Icons.pause,
+                              color: Colors.white,
+                              size: 70,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               );
             },
           ),
@@ -118,83 +150,87 @@ class GameScreen extends StatelessWidget {
           GetBuilder<GameOverController>(
             builder: (controller) {
               if (controller.isGameOver) {
-                return Center(
-                  child: Container(
-                    decoration: const BoxDecoration(color: Colors.white70),
-                    width: context.width / 3,
-                    height: context.height / 2,
-                    child: Stack(
-                      children: [
-                        const Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 8),
-                            child: Text(
-                              'GameOver',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 44,
+                return ColoredBox(
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Container(
+                      decoration: const BoxDecoration(color: Colors.white70),
+                      width: context.width / 3,
+                      height: context.height / 2,
+                      child: Stack(
+                        children: [
+                          const Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8),
+                              child: Text(
+                                'GameOver',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 44,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Align(
-                          child: Text(
-                            controller.getScoreText(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 24,
+                          Align(
+                            child: Text(
+                              controller.getScoreText(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 24,
+                              ),
                             ),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => controller.restart(dodgeGame),
-                                  child: const DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8),
-                                      child: Text(
-                                        'Restart',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 24,
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => controller.restart(dodgeGame),
+                                    child: const DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Text(
+                                          'Restart',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: controller.moveToScoreScreen,
-                                  child: const DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8),
-                                      child: Text(
-                                        'Score',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 24,
+                                  GestureDetector(
+                                    onTap: controller.moveToScoreScreen,
+                                    child: const DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: Text(
+                                          'Score',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );
