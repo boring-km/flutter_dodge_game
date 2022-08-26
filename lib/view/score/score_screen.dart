@@ -73,7 +73,7 @@ class ScoreScreen extends StatelessWidget {
                               final score = controller.scoreList[index];
                               return Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 4),
+                                const EdgeInsets.symmetric(vertical: 4),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
