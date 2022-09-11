@@ -1,33 +1,19 @@
 import 'package:logger/logger.dart';
 
 class Log {
-  static void d(dynamic msg) {
-    Logger(
-      printer: PrettyPrinter(
-        colors: false,
-        printTime: true,
-        methodCount: 0,
-      ),
-    ).d(msg);
+
+  static final logger = Logger(printer: PrettyPrinter());
+
+  static void i(dynamic message) {
+    logger.i(message);
   }
 
-  static void i(dynamic msg) {
-    Logger(
-      printer: PrettyPrinter(
-        colors: false,
-        printTime: true,
-        methodCount: 0,
-      ),
-    ).i(msg);
+  static void d(dynamic message) {
+    logger.d(message);
   }
 
-  static void e(dynamic msg) {
-    Logger(
-      printer: PrettyPrinter(
-        colors: false,
-        printTime: true,
-        methodCount: 0,
-      ),
-    ).e(msg);
+  static void e(dynamic message) {
+    logger.e(message);
   }
+
 }

@@ -32,11 +32,16 @@ dependencies:
   firebase_auth: ^3.6.3
   flutter_signin_button: ^2.0.0
 
-  # signin
+  # google sign in
   google_sign_in: ^5.4.1
+
+  # kakao login
+  kakao_flutter_sdk_user: ^1.2.1
 
   # fonts
   google_fonts: ^3.0.1
+
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:

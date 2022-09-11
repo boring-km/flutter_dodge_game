@@ -7,10 +7,10 @@ part of 'game_record.dart';
 // **************************************************************************
 
 GameRecord _$GameRecordFromJson(Map<String, dynamic> json) => GameRecord(
-      json['num'] as int,
-      json['time'] as String,
-      json['userName'] as String,
-    );
+  json['num'] as int,
+  json['time'] as String,
+  json['userName'] as String,
+);
 
 Map<String, dynamic> _$GameRecordToJson(GameRecord instance) =>
     <String, dynamic>{

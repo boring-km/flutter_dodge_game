@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:dodge_game/data/game_record.dart';
+import 'package:dodge_game/provider/shared_data.dart';
+import 'package:dodge_game/domain/model/game_record.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/provider/get_firebase.dart';
 import 'package:dodge_game/utils/logger.dart';
@@ -33,8 +34,7 @@ class GameOverController extends GetxController {
   }
 
   Future<void> _saveScore(String time) async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    Log.i('User nickname: ${currentUser?.displayName}');
+    final name = await SharedData.getUserName();
 
     final now = DateTime.now();
     final formattedDate = DateFormat('yyyy-MM-dd hh:mm:ss').format(now);
@@ -43,7 +43,7 @@ class GameOverController extends GetxController {
         GameRecord(
           int.parse(time),
           formattedDate,
-          currentUser?.displayName ?? '',
+          name,
         ),
       ),
     );
