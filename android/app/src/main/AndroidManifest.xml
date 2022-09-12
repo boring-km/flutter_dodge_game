@@ -2,7 +2,7 @@
     package="com.boringkm.dodge_game">
    <application
         android:label="dodge_game"
-        android:name="${applicationName}"
+        android:name=".App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
