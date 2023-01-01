@@ -11,5 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo '${{ secrets.TEST_TXT }}' > ./lib/firebase_options.dart
+      - run: echo '${{ secrets.TEST_TXT }}' | base64 -d > ./lib/firebase_options.dart
       - run: cat ./lib/firebase_options.dart
