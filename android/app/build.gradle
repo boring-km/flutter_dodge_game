@@ -21,7 +21,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def kakao_sdk_AppKey = localProperties.getProperty('kakao.sdk.appkey')
 
 apply plugin: 'com.android.application'
 // START: FlutterFire Configuration
@@ -56,7 +55,6 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [kakaoSdkAppkey: kakao_sdk_AppKey]
     }
 
     buildTypes {

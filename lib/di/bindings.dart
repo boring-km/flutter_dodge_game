@@ -3,7 +3,6 @@ import 'package:dodge_game/view/game/game_menu_controller.dart';
 import 'package:dodge_game/view/game/game_over_controller.dart';
 import 'package:dodge_game/view/game/game_timer_controller.dart';
 import 'package:dodge_game/view/login/google_login_controller.dart';
-import 'package:dodge_game/view/login/kakao_login_controller.dart';
 import 'package:dodge_game/view/menu/menu_screen_controller.dart';
 import 'package:dodge_game/view/score/score_screen_controller.dart';
 import 'package:get/get.dart';
@@ -11,9 +10,7 @@ import 'package:get/get.dart';
 class LoginScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get
-        ..put(GoogleLoginController())
-        ..put(KakaoLoginController());
+    Get.put(GoogleLoginController());
   }
 }
 

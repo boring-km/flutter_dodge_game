@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class DodgeGame extends FlameGame
-    with PanDetector, HasDraggables, TapDetector, HasCollisionDetection {
+    with PanDetector, TapDetector, HasCollisionDetection {
   late Player player;
   late RandomEnemyGenerator _randomEnemyGenerator;
   late TrackingEnemyGenerator _trackingEnemyGenerator;
@@ -59,7 +59,7 @@ class DodgeGame extends FlameGame
     );
 
     player.anchor = Anchor.center;
-    unawaited(add(player));
+    add(player);
     _healthController.playerCallback();
 
     _fixPlayerPosition();
@@ -76,7 +76,7 @@ class DodgeGame extends FlameGame
       ),
       knob: CircleComponent(radius: 30),
     );
-    unawaited(add(joystick2));
+    add(joystick2);
     return joystick2;
   }
 
@@ -91,7 +91,7 @@ class DodgeGame extends FlameGame
       ),
       knob: CircleComponent(radius: 30),
     );
-    unawaited(add(joystick1));
+    add(joystick1);
     return joystick1;
   }
 
