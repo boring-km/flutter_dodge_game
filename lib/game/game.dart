@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
 import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
 import 'package:dodge_game/game/player.dart';
+import 'package:dodge_game/utils/logger.dart';
 import 'package:dodge_game/view/game/game_health_controller.dart';
 import 'package:dodge_game/view/game/game_over_controller.dart';
 import 'package:dodge_game/view/game/game_timer_controller.dart';
@@ -10,7 +11,6 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
@@ -29,6 +29,8 @@ class DodgeGame extends FlameGame
   final GameTimerController _timerController = Get.find<GameTimerController>();
   final GameOverController _gameOverController = Get.find<GameOverController>();
 
+  late StreamSubscription<AccelerometerEvent> _streamSubscription;
+
   @override
   Future<void> onLoad() async {
     await images.load('simpleSpace_tilesheet@2.png');
@@ -36,6 +38,34 @@ class DodgeGame extends FlameGame
     await initPlayer();
     initEnemy();
     _timerController.start();
+
+    _streamSubscription =
+        accelerometerEvents.listen((AccelerometerEvent event) {
+      var newX = event.y - baseY;
+      var newY = event.x - baseX;
+      Log.i('newX: $newX, newY: $newY,');
+
+      if (2 <= newY && newY <= 4) newY = 0.0;
+      if (-0.3 <= newX && newX <= 0.3) newX = 0.0;
+
+      newY = num.parse(newY.toStringAsFixed(2)) as double;
+      newX = num.parse(newX.toStringAsFixed(2)) as double;
+      checkFinalCount();
+      count++;
+
+      if (newY < 2) {
+        newY *= 3;
+      }
+      newX *= 2;
+
+      player.moveDirection = Vector2(newX, newY);
+    });
+  }
+
+  void checkFinalCount() {
+    if (count == 100) {
+      count = 0;
+    }
   }
 
   void initEnemy() {
@@ -46,13 +76,8 @@ class DodgeGame extends FlameGame
   }
 
   Future<void> initPlayer() async {
-    final joystick1 = initJoyStickLeft();
-    final joystick2 = initJoyStickRight();
-
     player = Player(
       sprite: Sprite(await Flame.images.load('profile.png')),
-      joystickLeft: joystick1,
-      joystickRight: joystick2,
       size: Vector2(24, 24),
       position: size / 2,
       healthChangeCallback: _healthController.update,
@@ -65,36 +90,6 @@ class DodgeGame extends FlameGame
     _fixPlayerPosition();
   }
 
-  JoystickComponent initJoyStickRight() {
-    final joystick2 = JoystickComponent(
-      anchor: Anchor.bottomRight,
-      position: Vector2(size.x - 30, size.y - 30),
-      // size: 100,
-      background: CircleComponent(
-        radius: 60,
-        paint: Paint()..color = Colors.white.withOpacity(0.5),
-      ),
-      knob: CircleComponent(radius: 30),
-    );
-    add(joystick2);
-    return joystick2;
-  }
-
-  JoystickComponent initJoyStickLeft() {
-    final joystick1 = JoystickComponent(
-      anchor: Anchor.bottomLeft,
-      position: Vector2(30, size.y - 30),
-      // size: 100,
-      background: CircleComponent(
-        radius: 60,
-        paint: Paint()..color = Colors.white.withOpacity(0.5),
-      ),
-      knob: CircleComponent(radius: 30),
-    );
-    add(joystick1);
-    return joystick1;
-  }
-
   @override
   void update(double dt) {
     super.update(dt);
@@ -102,12 +97,15 @@ class DodgeGame extends FlameGame
     if (player.health <= 0) {
       pauseEngine();
       _timerController.stop();
+      _streamSubscription.pause();
       _gameOverController.gameOver(_timerController.timeText);
     }
   }
 
   @override
-  void onPanEnd(DragEndInfo? info) {}
+  void onPanEnd(DragEndInfo? info) {
+    _streamSubscription.cancel();
+  }
 
   @override
   void onTapDown(TapDownInfo info) {
@@ -115,29 +113,38 @@ class DodgeGame extends FlameGame
     _fixPlayerPosition();
   }
 
+  @override
+  void onRemove() {
+    _streamSubscription.cancel();
+    super.onRemove();
+  }
+
   void _fixPlayerPosition() {
     final temp = accelerometerEvents.listen((AccelerometerEvent event) {
       final newY = num.parse(event.y.toStringAsFixed(2)) as double;
       final newX = num.parse(event.x.toStringAsFixed(2)) as double;
-      baseX = newX;
-      baseY = newY;
+      baseX = newX / 3;
+      baseY = newY / 3;
     });
     Future.delayed(const Duration(seconds: 1), temp.cancel);
   }
 
   void resumeGame() {
     _timerController.resume();
+    _streamSubscription.resume();
     resumeEngine();
   }
 
   void pauseGame() {
     _timerController.pause();
+    _streamSubscription.pause();
     pauseEngine();
   }
 
   void restart() {
     player.revive();
     _healthController.update();
+    _streamSubscription.resume();
     resumeEngine();
   }
 }

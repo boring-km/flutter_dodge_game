@@ -1,4 +1,5 @@
 import 'package:dodge_game/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,12 @@ class GameApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final route =
+        FirebaseAuth.instance.currentUser != null ? Routes.menu : Routes.login;
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.login,
+      initialRoute: route,
       theme: _buildTheme(context),
       getPages: Pages.pages,
     );

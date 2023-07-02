@@ -7,24 +7,19 @@ import 'package:flame/components.dart';
 class Player extends SpriteComponent
     with KnowsGameSize, CollisionCallbacks, HasGameRef<DodgeGame> {
   Player({
-    super.sprite,
-    required this.joystickLeft,
-    required this.joystickRight,
+    required Function healthChangeCallback, super.sprite,
     super.position,
     super.size,
-    required Function healthChangeCallback,
   }) {
     _healthChangeCallback = healthChangeCallback;
   }
-  // Player joystick
-  JoystickComponent joystickLeft;
-  JoystickComponent joystickRight;
 
-  final double _speed = 150;
+  final double _speed = 200;
   int _health = 100;
 
   int get health => _health;
   late Function _healthChangeCallback;
+  Vector2 moveDirection = Vector2.zero();
 
   @override
   void onMount() {
@@ -55,12 +50,7 @@ class Player extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
-    if (!joystickLeft.delta.isZero()) {
-      position.add(joystickLeft.relativeDelta * _speed * dt);
-    }
-    if (!joystickRight.delta.isZero()) {
-      position.add(joystickRight.relativeDelta * _speed * dt);
-    }
+    position += moveDirection.normalized() * _speed * dt;
 
     position.clamp(
       Vector2.zero() + size / 2,
