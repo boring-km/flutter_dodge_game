@@ -14,7 +14,7 @@ dependencies:
 
 
   cupertino_icons: ^1.0.5
-  flame: ^1.8.0
+  flame: ^1.8.1
   sensors_plus: ^3.0.2
   logger: ^1.4.0
   get: ^4.6.5

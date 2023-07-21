@@ -26,7 +26,7 @@ class Player extends SpriteComponent
     super.onMount();
 
     final shape = RectangleHitbox.relative(
-      Vector2(1, 1),
+      Vector2(1.5, 1.5),
       parentSize: size,
       position: size / 2,
       anchor: Anchor.center,

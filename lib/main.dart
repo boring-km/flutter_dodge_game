@@ -19,12 +19,12 @@ class GameApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final route =
+    final firstPage =
         FirebaseAuth.instance.currentUser != null ? Routes.menu : Routes.login;
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: route,
+      initialRoute: firstPage,
       theme: _buildTheme(context),
       getPages: Pages.pages,
     );
