@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:dodge_game/game/enemy/random_enemy_generator.dart';
-import 'package:dodge_game/game/enemy/tracking_enemy_generator.dart';
+import 'package:dodge_game/game/enemy/random/random_enemy_generator.dart';
+import 'package:dodge_game/game/enemy/tracking/tracking_enemy_generator.dart';
 import 'package:dodge_game/game/player.dart';
-import 'package:dodge_game/utils/logger.dart';
 import 'package:dodge_game/view/game/game_health_controller.dart';
 import 'package:dodge_game/view/game/game_over_controller.dart';
 import 'package:dodge_game/view/game/game_timer_controller.dart';
@@ -43,7 +42,6 @@ class DodgeGame extends FlameGame
         accelerometerEvents.listen((AccelerometerEvent event) {
       var newX = event.y - baseY;
       var newY = event.x - baseX;
-      Log.i('newX: $newX, newY: $newY,');
 
       if (2 <= newY && newY <= 4) newY = 0.0;
       if (-0.3 <= newX && newX <= 0.3) newX = 0.0;

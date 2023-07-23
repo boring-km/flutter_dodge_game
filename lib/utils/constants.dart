@@ -1,5 +1,5 @@
 class GameOptions {
-  static const enemyCount = 5;
-
-  static const trackerCount = 20;
+  static const randomDotEnemyCount = 5;
+  static const trackerDotEnemyCount = 7;
+  static const lineEnemyCount = 4;
 }

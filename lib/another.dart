@@ -1,3 +1,4 @@
+import 'package:dodge_game/game/enemy/line/line.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -19,12 +20,14 @@ void main() async {
 class MyGame extends FlameGame with TapDetector {
   Offset? startOffset;
   Offset? targetOffset;
-  double progress = 0.0;
-  double duration = 1.0; // 이동에 걸리는 시간 (초)
+  double progress = 0;
+  double duration = 1; // 이동에 걸리는 시간 (초)
   Paint paint = Paint()
-    ..color = Colors.blue
+    ..color = Colors.yellow
     ..strokeCap = StrokeCap.round;
   bool isEnd = false;
+  Line? line;
+
 
   @override
   void onTapDown(TapDownInfo info) {
@@ -43,14 +46,14 @@ class MyGame extends FlameGame with TapDetector {
 
     if (!isEnd) {
       final currentOffset = line!.start + (line!.end - line!.start) * line!.progress;
-      canvas.drawLine(line!.start, currentOffset, paint..strokeWidth = 10);
+      canvas.drawLine(line!.start, currentOffset, paint..strokeWidth = 5);
 
       if (line!.isEnd) {
         isEnd = true;
       }
     } else {
       final currentOffset = startOffset! + (targetOffset! - startOffset!) * (1 - line!.progress);
-      canvas.drawLine(currentOffset, targetOffset!, paint..strokeWidth = 10);
+      canvas.drawLine(currentOffset, targetOffset!, paint..strokeWidth = 5);
       if (line!.progress < 0) {
         line = null;
         removeFromParent();
@@ -58,7 +61,6 @@ class MyGame extends FlameGame with TapDetector {
     }
     super.render(canvas);
   }
-  Line? line;
 
   @override
   void update(double dt) {
@@ -71,23 +73,5 @@ class MyGame extends FlameGame with TapDetector {
     } else {
       line!.progress += dt / duration;
     }
-  }
-}
-
-class Line {
-
-  Line(this.start, this.end, this.progress);
-
-  Offset start;
-  Offset end;
-  double progress;
-  bool isEnd = false;
-
-  bool check() {
-    final res = progress >= 1.0;
-    if (!isEnd && res) {
-      isEnd = true;
-    }
-    return res;
   }
 }

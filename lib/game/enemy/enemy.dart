@@ -1,1 +1,1 @@
-abstract class Enemy {}
+mixin class Enemy {}

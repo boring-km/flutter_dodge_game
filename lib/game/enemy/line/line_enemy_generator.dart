@@ -1,13 +1,16 @@
 import 'dart:math';
 
-import 'package:dodge_game/game/enemy/random_enemy.dart';
+import 'package:dodge_game/game/enemy/get_random_start_position.dart';
+import 'package:dodge_game/game/enemy/line/line_enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/utils/constants.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
-class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
-  Vector2 enemySize = Vector2(12, 12);
+class LineEnemyGenerator extends Component with HasGameRef<DodgeGame> {
+
+
+
   Random random = Random();
   Random randomType = Random();
 
@@ -19,14 +22,18 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
       final typeNum = (randomType.nextDouble() * 4).toInt();
+      final (startPosition, endPosition) = getStartEndPosition(typeNum, gameRef);
+      
+      final startOffset = Offset(startPosition.x, startPosition.y);
+      final endOffset = Offset(endPosition.x, endPosition.y);
 
-      final enemy = RandomEnemy(
-        directX: getDirectX(typeNum),
-        directY: getDirectY(typeNum),
-        size: enemySize,
+      final enemy = LineEnemy(
+        start: startOffset,
+        end: endOffset,
+        size: Vector2(10, 10),
         color: Colors.yellow,
-        position: getStartPosition(typeNum),
-        speed: 120,
+        position: startPosition,
+        duration: 2,
         removeCallback: () {
           _enemyCount -= 1;
         },
@@ -82,24 +89,6 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
     return anchor;
   }
 
-  Vector2 getStartPosition(int typeNum) {
-    var startPosition = Vector2(getRandomX(), 1);
-    if (typeNum == 0) {
-      startPosition = Vector2(getRandomX(), 1);
-    } else if (typeNum == 1) {
-      startPosition = Vector2(getRandomX(), gameRef.size.y);
-    } else if (typeNum == 2) {
-      startPosition = Vector2(gameRef.size.x, getRandomY());
-    } else {
-      startPosition = Vector2(1, getRandomY());
-    }
-    return startPosition;
-  }
-
-  double getRandomY() => random.nextDouble() * gameRef.size.y;
-
-  double getRandomX() => random.nextDouble() * gameRef.size.x;
-
   void setMoveScope(Vector2 position, Vector2 initialSize) {
     position.clamp(
       Vector2.zero() + initialSize / 2,
@@ -110,7 +99,7 @@ class RandomEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    final diff = GameOptions.enemyCount - _enemyCount;
+    final diff = GameOptions.lineEnemyCount - _enemyCount;
     if (diff > 0) {
       generateEnemies(diff);
     }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:dodge_game/game/enemy/tracking_enemy.dart';
+import 'package:dodge_game/game/enemy/get_random_start_position.dart';
+import 'package:dodge_game/game/enemy/tracking/tracking_enemy.dart';
 import 'package:dodge_game/game/game.dart';
 import 'package:dodge_game/game/player.dart';
 import 'package:dodge_game/utils/constants.dart';
@@ -25,7 +26,7 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   void generateEnemies(int n) {
     for (var i = 0; i < n; i++) {
       final typeNum = (randomType.nextDouble() * 4).toInt();
-      final startPosition = getStartPosition(typeNum);
+      final startPosition = getStartPosition(typeNum, gameRef);
 
       final enemy = TrackingEnemy(
         player: _player,
@@ -56,23 +57,6 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
     return anchor;
   }
 
-  Vector2 getStartPosition(int typeNum) {
-    var startPosition = Vector2(getRandomX(), 0);
-    if (typeNum == 0) {
-      startPosition = Vector2(getRandomX(), 0);
-    } else if (typeNum == 1) {
-      startPosition = Vector2(getRandomX(), gameRef.size.y);
-    } else if (typeNum == 2) {
-      startPosition = Vector2(gameRef.size.x, getRandomY());
-    } else {
-      startPosition = Vector2(0, getRandomY());
-    }
-    return startPosition;
-  }
-
-  double getRandomY() => random.nextDouble() * gameRef.size.y;
-
-  double getRandomX() => random.nextDouble() * gameRef.size.x;
 
   void setMoveScope(Vector2 position, Vector2 initialSize) {
     position.clamp(
@@ -84,7 +68,7 @@ class TrackingEnemyGenerator extends Component with HasGameRef<DodgeGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    final diff = GameOptions.trackerCount - _enemyCount;
+    final diff = GameOptions.trackerDotEnemyCount - _enemyCount;
     if (diff > 0) {
       generateEnemies(diff);
     }
